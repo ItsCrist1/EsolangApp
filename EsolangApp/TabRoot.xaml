@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    	    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+			xmlns:local="clr-namespace:EsolangApp"
+			xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			x:Class="EsolangApp.TabRoot"
+            BarBackgroundColor="#252525"
+            BackgroundColor="#2E2E2E">	
+	<local:HomeTab Title="Home"/>
+	<local:SettingsTab Title="Settings"/>
+</TabbedPage>

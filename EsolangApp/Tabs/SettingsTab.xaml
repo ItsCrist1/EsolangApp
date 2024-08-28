@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:EsolangApp"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EsolangApp.SettingsTab">
+    
+    <VerticalStackLayout BackgroundColor="Transparent">
+        <Label Text="--- PREFERENCES ---"
+               HorizontalOptions="Center"
+               FontSize="18"
+               Padding="0,10,0,0"/>
+               
+        <Grid Margin="10">
+            <Label x:Name="ExecPath"
+                   VerticalOptions="Center"
+                   FontSize="20"
+                   MaximumWidthRequest="235"
+                   HorizontalOptions="Start"/>
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   Spacing="10">
+                <Button Text="Reset"
+                        TextColor="LightGrey"
+                        Clicked="onExecPathResetClick"
+                        CornerRadius="10"/>
+                <Button Text="Change"
+                        TextColor="LightGrey"
+                        Clicked="onExecPathClick"
+                        CornerRadius="10"/>
+            </HorizontalStackLayout>
+        </Grid>
+        
+        <Grid Margin="10">
+            <Label x:Name="SeedLabel"
+                   VerticalOptions="Center"
+                   FontSize="20"
+                   MaximumWidthRequest="235"
+                   HorizontalOptions="Start"/>
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   Spacing="10">
+                <Button Text="Reset"
+                        TextColor="LightGrey"
+                        Clicked="onSeedResetClick"
+                        CornerRadius="10"/>
+                <Button Text="Change"
+                        TextColor="LightGrey"
+                        Clicked="onSeedChangeClick"
+                        CornerRadius="10"/>
+            </HorizontalStackLayout>
+        </Grid>
+        
+        <Label Text="--- SETTINGS ---"
+               HorizontalOptions="Center"
+               FontSize="18"
+               Padding="0,10,0,0"/>
+               
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="PICtoggle"/>
+            
+            <Label Text="Perform Initial Checks"
+                   VerticalTextAlignment="Center"
+                   FontSize="18"/>
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="CREtoggle"/>
+            
+            <Label Text="Cause Runtime Errors"
+                   VerticalTextAlignment="Center"
+                   FontSize="18"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
