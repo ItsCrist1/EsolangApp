@@ -10,12 +10,13 @@ using System.Text.Json.Serialization;
 
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using EsolangApp;
 
 namespace EsolangApp;
 
 public enum Dir { N, S, E, W, NE, NW, SE, SW }
 public enum ErrorType { EmptyStack, InvalidRange, InvalidNumber, InvalidNumberInput, InvalidStringInput, InvalidPtrPos }
-public enum InitErrorType { EmptySource, UnevenBrackets }
+public enum InitErrorType { EmptySource, UnevenBrackets, LackOfEnd }
 
 public struct Settings {
     [JsonInclude] public bool PerformInitialChecks;
@@ -161,6 +162,7 @@ class Interpreter : Utils {
     Settings settings;
     ContentPage contentPage;
     Random rand;
+    Action<object,EventArgs> resetFunc;
     
     char[,] board;
     
@@ -172,10 +174,11 @@ class Interpreter : Utils {
        But I really think it'll be worth it :)
        Dictionary<char,Action> operations; */
 
-    public Interpreter(Settings settings, ContentPage contentPage) {
+    public Interpreter(Settings settings, ContentPage contentPage, Action<object,EventArgs> resetFunc) {
         this.settings = settings;
         this.contentPage = contentPage;
         this.rand = new(settings.Seed);
+        this.resetFunc = resetFunc;
     }
     
     public void ChangeSettings(Settings settings) {
@@ -186,6 +189,7 @@ class Interpreter : Utils {
     void performInitChecks(string s) {
         if(!settings.PerformInitialChecks) return;
         if(s == string.Empty) new InitError(InitErrorType.EmptySource, "The provided source is empty hence no code execution can be performed").Cause();
+        if(!s.Contains(_EXIT)) new InitError(InitErrorType.LackOfEnd, $"The provided source contains no exit command {_EXIT} therefore it will result into an {(settings.WrapAround ? "infinite loop" : "out of bounds error")}.").Cause();
         if(s.Count(x => x == _STR_MODE) % 2 != 0) new InitError(InitErrorType.UnevenBrackets, $"The provided source contains an uneven amount of string brackets [{_STR_MODE}]").Cause();
         if(s.Count(x => x == _NUM_MODE) % 2 != 0) new InitError(InitErrorType.UnevenBrackets, $"The provided source contains an uneven amount of number brackets [{_NUM_MODE}]").Cause();
     }
@@ -215,8 +219,8 @@ class Interpreter : Utils {
         sw.Restart();
     }
     
-    public Result Reset(string code) {
-        performInitChecks(code);
+    public Result Reset(string code, bool PIC) {
+        if(PIC) performInitChecks(code);
         board = strToBoard(code);
         resetVars();
         
@@ -271,7 +275,10 @@ class Interpreter : Utils {
 
             if(pos.y > board.GetLength(1)-1) pos.y = 0;
             else if(pos.y < 0) pos.y = board.GetLength(1) - 1;
-        } //else if(!pos.IsWithin(board)) new Error(ErrorType.InvalidPtrPos, $"The pointer left it's bounds\nPointer: {pos.TS}\nBounds: ({board.GetLength(0)},{board.GetLength(1)})").Cause();
+        } else if(!pos.IsWithin(board)) {
+            resetFunc(null,null);
+            new Error(ErrorType.InvalidPtrPos, $"The pointer left it's bounds\nPointer: {pos.TS}\nBounds: ({board.GetLength(0)},{board.GetLength(1)})").Cause();
+        }
 
         steps++;
         sw.Stop();
@@ -350,7 +357,7 @@ class Interpreter : Utils {
             sw.Stop();
             string d1 = await contentPage.DisplayPromptAsync("Number Input", "Enter a number:", "OK", null, placeholder: "-134.67", keyboard: Keyboard.Numeric);
             sw.Start();
-            if(d1 == string.Empty) if(b) new Error(ErrorType.InvalidNumberInput, "You cannot not input anything (Expected a number)").Cause();
+            if(string.IsNullOrEmpty(d1) && b) new Error(ErrorType.InvalidNumberInput, "You cannot not input anything (Expected a number)").Cause();
 
             if(double.TryParse(d1, out double d2)) stack.Push(d2);
             else stack.Push(0);
@@ -360,7 +367,7 @@ class Interpreter : Utils {
             sw.Stop();
             string s = await contentPage.DisplayPromptAsync("String Input", "Enter a string:", "OK", null, placeholder: "Some string...", keyboard: Keyboard.Plain);
             sw.Start();
-            if(s == string.Empty) if(b) new Error(ErrorType.InvalidStringInput, "You cannot not input anything (Expected a string)").Cause();
+            if(string.IsNullOrEmpty(s) && b) new Error(ErrorType.InvalidStringInput, "You cannot not input anything (Expected a string)").Cause();
             for(int j=s.Length-1; j >= 0; j--) stack.Push(s[j]);
             break;
 
@@ -410,7 +417,7 @@ class Interpreter : Utils {
             case _RADICAL:
             if(stack.Count > 0) {
                 double n = stack.Pop();
-                if(n > 0) stack.Push(Math.Sqrt(n));
+                if(n >= 0) stack.Push(Math.Sqrt(n));
                 else if(b) new Error(ErrorType.InvalidRange, "Cannot get the radial of a negative number").Cause();
             } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the radical in an empty stack").Cause();
             break;

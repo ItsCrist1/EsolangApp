@@ -70,5 +70,13 @@
                    VerticalTextAlignment="Center"
                    FontSize="18"/>
         </HorizontalStackLayout>
+        
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="WAtoggle"/>
+            
+            <Label Text="Wrap Around"
+                   VerticalTextAlignment="Center"
+                   FontSize="18"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

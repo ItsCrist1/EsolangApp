@@ -28,8 +28,8 @@ partial class HomeTab : ContentPage {
         
         Globals.OnExecPathChange();
         
-        itptr = new Interpreter(Globals.Settings, this);
-        Result res = itptr.Reset(CodeEditor.Text);
+        itptr = new Interpreter(Globals.Settings, this, onReset);
+        Result res = itptr.Reset(CodeEditor.Text,false);
         
         populateDebugGrid(res.board,new(0,0));
     }
@@ -68,7 +68,10 @@ partial class HomeTab : ContentPage {
     }
 
     async void onRun(object s, EventArgs e) {
-        itptr.ChangeSettings(Globals.Settings);
+        if(Globals.SettingsChanged) {
+             itptr.ChangeSettings(Globals.Settings);
+             Globals.SettingsChanged = false;
+        }
         Result res = await itptr.Interpret(CodeEditor.Text);
         OutputLabel.Text = res.GetStr();
         atStart =  false;
@@ -82,8 +85,10 @@ partial class HomeTab : ContentPage {
     async void onStep(object s, EventArgs e) {
         Result res;
         if(atStart) {
-            itptr.ChangeSettings(Globals.Settings);
-            itptr.Reset(CodeEditor.Text);
+            if(Globals.SettingsChanged) {
+                itptr.ChangeSettings(Globals.Settings);
+                Globals.SettingsChanged = false;
+            } itptr.Reset(CodeEditor.Text,true);
             res = await itptr.Step();
             atStart = false;
         } else res = await itptr.Step();
@@ -96,15 +101,17 @@ partial class HomeTab : ContentPage {
         populateDebugGrid(res.board,res.pos.TT);
     }
     
-    async void onReset(object s, EventArgs e) {
-        itptr.ChangeSettings(Globals.Settings);
-        atStart = true;
+    void onReset(object s, EventArgs e) {
+        if(Globals.SettingsChanged) {
+            itptr.ChangeSettings(Globals.Settings);
+            Globals.SettingsChanged = false;
+        } atStart = true;
         
         resetButton.IsEnabled = false;
         stepButton.IsEnabled = true;
         
         OutputLabel.Text = "Output will be displayed here";
-        Result res = itptr.Reset(CodeEditor.Text);
+        Result res = itptr.Reset(CodeEditor.Text,false);
         
         populateDebugGrid(res.board,new(0,0));
     }

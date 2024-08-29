@@ -20,7 +20,6 @@ partial class App : Application {
 	
 	void InitializeGlobals() {
 		Globals.SaveFile = Path.Combine(Globals.LOCAL_DATA, Globals.SaveFile);
-        File.Delete(Globals.SaveFile);
 			
 		if(!File.Exists(Globals.SaveFile)) {
 			Globals.Settings = Settings.Default;

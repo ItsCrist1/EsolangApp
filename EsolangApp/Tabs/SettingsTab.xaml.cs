@@ -12,9 +12,11 @@ partial class SettingsTab : ContentPage {
 		
 		PICtoggle.IsToggled = Globals.Settings.PerformInitialChecks;
 		CREtoggle.IsToggled = Globals.Settings.CauseRuntimeErrors;
+        WAtoggle.IsToggled = Globals.Settings.WrapAround;
 		
 		PICtoggle.Toggled += onTogglePIC;
 		CREtoggle.Toggled += onToggleCRE;
+        WAtoggle.Toggled += onToggleWA;
 		
 		updateExecPath();
         
@@ -35,6 +37,11 @@ partial class SettingsTab : ContentPage {
 		Globals.Settings.CauseRuntimeErrors = !Globals.Settings.CauseRuntimeErrors;
 		Globals.OnAppSleep();
 	}
+    
+    void onToggleWA(object s, EventArgs e) {
+        Globals.Settings.WrapAround = !Globals.Settings.WrapAround;
+        Globals.OnAppSleep();
+    }
 	
 	void onExecPathResetClick(object s, EventArgs e) {
 		Globals.ExecFile = Path.Combine(Globals.LOCAL_DATA, Globals.DEF_EXEC_FILE);
@@ -53,6 +60,7 @@ partial class SettingsTab : ContentPage {
     void onSeedResetClick(object s, EventArgs e) {
         Globals.Settings.Seed = 0;
         SeedLabel.Text = "Seed: 0";
+        Globals.OnAppSleep();
     }
     
     async void onSeedChangeClick(object s, EventArgs e) {
@@ -60,6 +68,7 @@ partial class SettingsTab : ContentPage {
         if(int.TryParse(r, out int n)) {
             Globals.Settings.Seed = n;
             SeedLabel.Text = $"Seed: {n}";
-        } else await DisplayAlert("Error", $"{r} is not a valid seed (an integer)", "Ok");
+            Globals.OnAppSleep();
+        } else if(!string.IsNullOrEmpty(r)) await DisplayAlert("Error", $"{r} is not a valid seed (an integer)", "Ok");
     }
 }
