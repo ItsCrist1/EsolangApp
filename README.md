@@ -13,15 +13,15 @@ The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/w
 ∆ - Exit program immediately.
 
 ## Directions
-W - Set movement direction to North.__
-S - Set movement direction to South.__
-D - Set movement direction to East.__
-A - Set movement direction to West.
+W - Set movement direction to North. <br/>
+S - Set movement direction to South. <br/>
+D - Set movement direction to East. <br/>
+A - Set movement direction to West. <br/>
 
-E - Set movement direction to North East.__
-Q - Set movement direction to North West.__
-Z - Set movement direction to South West.__
-C - Set movement direction to South East.
+E - Set movement direction to North East.<br/>
+Q - Set movement direction to North West.<br/>
+Z - Set movement direction to South West.<br/>
+C - Set movement direction to South East.<br/>
 
 ## String Mode
 " - You can use this to push a string onto the stack (e.g. "Hello world" => 72; 101; 108; 108; 111; 32; 87; 111;).
