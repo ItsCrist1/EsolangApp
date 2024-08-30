@@ -74,7 +74,7 @@ partial class HomeTab : ContentPage {
         }
         
         Result res = await itptr.Interpret(CodeEditor.Text);
-        OutputLabel.Text = res.GetStr();
+        OutputLabel.Text = res.GetStr(Globals.Settings.Precision);
         atStart =  false;
         
         stepButton.IsEnabled = false;
@@ -97,7 +97,7 @@ partial class HomeTab : ContentPage {
         stepButton.IsEnabled = !res.done;
         resetButton.IsEnabled = !atStart;
         
-        OutputLabel.Text = res.GetStr();
+        OutputLabel.Text = res.GetStr(Globals.Settings.Precision);
         
         populateDebugGrid(res.board,res.pos.TT);
     }

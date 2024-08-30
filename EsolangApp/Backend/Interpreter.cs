@@ -15,7 +15,7 @@ using System.Globalization;
 namespace EsolangApp;
 
 public enum Dir { N, S, E, W, NE, NW, SE, SW }
-public enum ErrorType { EmptyStack, InvalidRange, InvalidNumber, InvalidNumberInput, InvalidStringInput, InvalidPtrPos }
+public enum ErrorType { EmptyStack, InvalidRange, InvalidNumber, InvalidNumberInput, InvalidStringInput, InvalidPtrPos, DivisionByZero }
 public enum InitErrorType { EmptySource, UnevenBrackets, LackOfEnd }
 
 public struct Settings {
@@ -25,21 +25,23 @@ public struct Settings {
     [JsonInclude] public bool WrapAround;
     [JsonInclude] public string LogDir;
     [JsonInclude] public bool EnableLogging;
+    [JsonInclude] public uint Precision;
 
     [JsonConstructor]
-    public Settings(bool PerformInitialChecks, bool CauseRuntimeErrors, int Seed, bool WrapAround, string LogDir, bool EnableLogging) {
+    public Settings(bool PerformInitialChecks, bool CauseRuntimeErrors, int Seed, bool WrapAround, string LogDir, bool EnableLogging, uint Precision) {
         this.PerformInitialChecks = PerformInitialChecks;
         this.CauseRuntimeErrors = CauseRuntimeErrors;
         this.Seed = Seed;
         this.WrapAround = WrapAround;
         this.LogDir = LogDir;
         this.EnableLogging = EnableLogging;
+        this.Precision = Precision;
     }
 
     public static Settings Default() {
         string logDir = Path.Combine(Globals.LOCAL_DATA,"EsolangLogs");
         if(!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
-        return new(true,true,0,true,logDir,true);
+        return new(true,true,0,true,logDir,true,2);
     }
 }
 
@@ -94,11 +96,11 @@ class Result {
     
     static public Result Null => new Result(null,0,null,null,new Pos(0),(Dir)0,0,false);
 
-    public string GetStr() {
+    public string GetStr(uint precision) {
         StringBuilder str = new();
         
         string t = output == string.Empty ? "Nothing." : output;
-        if(double.TryParse(t,out double n)) t = n.ToString("N0", CultureInfo.InvariantCulture);
+        if(double.TryParse(t,out double n)) t = n.ToString("N" + precision);
         
         str.AppendLine($"\nOutput: {t}").Append("Stack:");
         
@@ -122,10 +124,8 @@ class Logger {
     }
     
     public void Log(string str) {
-        File.AppendAllText(file, $"[{DateTime.Now}] {safenStr(str)}\n\n");
+        File.AppendAllText(file, $"[{DateTime.Now}] {str}\n\n");
     }
-    
-    string safenStr(string str) => str;
 }
 
 class InitError {
@@ -240,7 +240,7 @@ class Interpreter : Utils {
         resetVars();
         
         Result res = new(board,0,output,new(),new(),dir,steps,true);
-        if(settings.EnableLogging) logger.Log($"Resetted to {code} {(PIC?"while":"without")} performing initial checks\nResult: {res.GetStr()}");
+        if(settings.EnableLogging) logger.Log($"Resetted to {code} {(PIC?"while":"without")} performing initial checks\nResult: {res.GetStr(settings.Precision)}");
         return res;
     }
 
@@ -252,7 +252,7 @@ class Interpreter : Utils {
         while(c != _EXIT) await Step(false);
 
         Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,true);
-        if(settings.EnableLogging) logger.Log($"Interpretted {code}\nResult: {res.GetStr()}");
+        if(settings.EnableLogging) logger.Log($"Interpretted {code}\nResult: {res.GetStr(settings.Precision)}");
         return res;
     }
     
@@ -303,7 +303,7 @@ class Interpreter : Utils {
         sw.Stop();
         
         Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,b);
-        if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr()}");
+        if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr(settings.Precision)}");
         return res;
     }
     
@@ -344,7 +344,8 @@ class Interpreter : Utils {
             if(stack.Count == 1) stack.Push(stack.Pop() / 2);
             else if(stack.Count > 1){
                 double x = stack.Pop(), y = stack.Pop();
-                stack.Push(y / x);
+                if(x != 0) stack.Push(y / x);
+                else new Error(ErrorType.DivisionByZero, $"Cannot divide {y} by zero",settings,logger).Cause();
             } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform division on an empty stack",settings,logger).Cause();
             break;
 
@@ -352,7 +353,8 @@ class Interpreter : Utils {
             if(stack.Count == 1) stack.Push(stack.Pop() % 1);
             else if(stack.Count > 1) {
                 double x = stack.Pop(), y = stack.Pop();
-                stack.Push(y % x);
+                if(x != 0) stack.Push(y % x);
+                else if(b) new Error(ErrorType.DivisionByZero, $"Cannot modulo {y} by zero",settings,logger).Cause();
             } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform modulo on an empty stack",settings,logger).Cause();
             break;
 
@@ -477,6 +479,29 @@ class Interpreter : Utils {
             case _GET_STACK_SIZE: stack.Push(stack.Count); break;
             case _POP: stack.Pop(); break;
             case _INFINITY: stack.Push(double.PositiveInfinity); break;
+            
+            case _SIN:
+            if(stack.Count > 0) stack.Push(Math.Sin(stack.Pop()));
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot get the sinus from an empty stack",settings,logger).Cause();
+            break;
+            
+            case _COS:
+            if(stack.Count > 0) stack.Push(Math.Cos(stack.Pop()));
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cosinus from an empty stack",settings,logger).Cause();
+            break;
+            
+            case _TAN:
+            if(stack.Count > 0) stack.Push(Math.Tan(stack.Pop()));
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot get the tangent from an empty stack",settings,logger).Cause();
+            break;
+            
+            case _CTG:
+            if(stack.Count > 0) {
+                double x = stack.Pop(), y = Math.Tan(x);
+                if(x != 0) stack.Push(1 / y);
+                else new Error(ErrorType.DivisionByZero, $"The tangent of {x} is zero.",settings,logger).Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cotanget from an empty stack",settings,logger).Cause();
+            break;
             
             case _EXIT: return true;
         } return false;

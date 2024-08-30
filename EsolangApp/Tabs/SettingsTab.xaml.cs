@@ -25,6 +25,7 @@ partial class SettingsTab : ContentPage {
         
         SeedLabel.Text = $"Seed: {Globals.Settings.Seed}";
         LogPath.Text = $"Log Path: {Globals.Settings.LogDir}";
+        PrecisionLabel.Text = $"Decimals Displayed: {Globals.Settings.Precision}";
 	}
 	
 	void updateExecPath() {
@@ -98,5 +99,19 @@ partial class SettingsTab : ContentPage {
     
     async void onDocsClick(object s, EventArgs e) {
         await Launcher.OpenAsync("https://github.com/ItsCrist1/EsolangApp/blob/main/README.md");
+    }
+    
+    void onPrecisionResetClick(object s, EventArgs e) {
+        Globals.Settings.Precision = 2;
+        PrecisionLabel.Text = "Decimals Displayed: 2";
+    }
+    
+    async void onPrecisionClick(object s, EventArgs e) {
+        string r = await DisplayPromptAsync("Select new precision", "Enter a new precision to be displayed for floating point numbers:", initialValue: Globals.Settings.Precision.ToString(), keyboard: Keyboard.Numeric);
+        if(uint.TryParse(r, out uint n)) {
+            Globals.Settings.Precision = n;
+            PrecisionLabel.Text = $"Decimals Displayed: {n}";
+            Globals.OnAppSleep();
+        } else if(!string.IsNullOrEmpty(r)) await DisplayAlert("Error", $"{r} is not a valid precision (a positive integer)", "Ok");
     }
 }

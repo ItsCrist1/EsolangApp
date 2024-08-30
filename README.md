@@ -1,5 +1,5 @@
 # EsolangApp
-An application made with .NET MAUI for an custom esolang interpreter written in C# by me.
+An application made with .NET MAUI for a custom esolang interpreter written in C# by me.
 
 # Features
 - Step By Step Debugging
@@ -87,3 +87,6 @@ $ - Removes the last number from the stack. <br/>
 
 # Contact
 You can contact me at cristi9270@gmail.com or cristi123612 on discord.
+
+# License
+This project is licensed under [The MIT License](https://github.com/ItsCrist1/EsolangApp/blob/main/LICENSE.txt)

@@ -37,6 +37,11 @@ class Utils {
     protected const char _RADICAL = '√';
     protected const char _INFINITY = '∞';
     protected const char _ROUND = '&';
+    
+    protected const char _SIN = '⟨';
+    protected const char _COS = '⟩';
+    protected const char _TAN = '«';
+    protected const char _CTG = '»';
 
     protected const char _GET = ',';
     protected const char _SET = '.';
