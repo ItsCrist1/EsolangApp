@@ -31,9 +31,9 @@ C - Set movement direction to South East.
 Tip: You can also use _ to delimiter decimals (no practical use but makes it easier to read).
 
 ## Operators
-+ - Gets the last two elements from the stack and pushes their sum (If only one element is present then the last element will get incremented by one).
-- - Gets the last two elements from the stack and pushes their substraction (If only one element is present then the last element will get decremented by one).
-* - Gets the last two elements from the stack and pushes their multiplication (If only one element is present then the last element will get doubled).
+\+ - Gets the last two elements from the stack and pushes their sum (If only one element is present then the last element will get incremented by one).
+\- - Gets the last two elements from the stack and pushes their substraction (If only one element is present then the last element will get decremented by one).
+\* - Gets the last two elements from the stack and pushes their multiplication (If only one element is present then the last element will get doubled).
 / - Gets the last two elements from the stack and pushes their division (If only one element is present then the last element will get halves by one).
 % - Gets the last two elements from the stack and pushes their modulo (If only one element is present then the last element will be moduloed by one).
 ^ - Gets the last two elements from the stack and pushes the first one at the power of the second one (If only one element is present then the last element will be squared).
