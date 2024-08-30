@@ -6,6 +6,13 @@ An application made with .NET MAUI for an custom esolang interpreter written in 
 - Lots of settings and configuration
 - Comprehensive and customizable logging
 
+# Installation
+This MAUI application is meant to be ran on Android but it'll get IOS support soon. <br/>
+
+To run this application **on Android** simply download [the apk](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp-signed.apk). <br/>
+
+While I don't plan to implement official **Windows** support you can try to run it with [this exe](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp.exe) (bugs are to be expected and the app could just simply not run).
+
 # Interpreter
 The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/wiki/Befunge) with all sort of arithmetical and utility features. The interpreter works with a floating point number array and the pointer can move in all cardinal and intercardinal directions, meaning you can move diagonally.
 
@@ -78,5 +85,5 @@ $ - Removes the last number from the stack. <br/>
 
 . - Gets the last three numbers, rounds them, and uses them as coordinates to set the program's board x,y cell to the third number (First the program takes a number that will be **the character** then a number that will be **the x position** then a number that will be **the y position**).
 
-
-# That's pretty much it!
+# Contact
+You can contact me at cristi9270@gmail.com or cristi123612 on discord.
