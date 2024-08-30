@@ -13,14 +13,14 @@ The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/w
 ∆ - Exit program immediately.
 
 ## Directions
-W - Set movement direction to North.
-S - Set movement direction to South.
-D - Set movement direction to East.
+W - Set movement direction to North.__
+S - Set movement direction to South.__
+D - Set movement direction to East.__
 A - Set movement direction to West.
 
-E - Set movement direction to North East.
-Q - Set movement direction to North West.
-Z - Set movement direction to South West.
+E - Set movement direction to North East.__
+Q - Set movement direction to North West.__
+Z - Set movement direction to South West.__
 C - Set movement direction to South East.
 
 ## String Mode
