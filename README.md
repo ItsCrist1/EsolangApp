@@ -44,34 +44,34 @@ Tip: You can also use _ to delimiter decimals (no practical use but makes it eas
 ^ - Gets the last two elements from the stack and pushes the first one at the power of the second one (If only one element is present then the last element will be squared).
 
 ## Arithmetics
-π - Pushes pi to the stack.
-∞ - Pushes infinity to the stack.
-√ - Pushes the radical of the last number from the stack (original number gets removed).
-& - Rounds the last number from the stack.
+π - Pushes pi to the stack. <br/>
+∞ - Pushes infinity to the stack. <br/>
+√ - Pushes the radical of the last number from the stack (original number gets removed). <br/>
+& - Rounds the last number from the stack. <br/>
 
 ## If Statements
-_ - Changes the direcrion to East if the stack is empty or if the last number from the stack is 0, the direction gets set to West otherwise.
-| - Changes the direcrion to North if the stack is empty or if the last number from the stack is 0, the direction gets set to South otherwise.
-; - If the last number isn't equal to the second to last one then the pointer moves an extra cell by the direction it already had.
+_ - Changes the direcrion to East if the stack is empty or if the last number from the stack is 0, the direction gets set to West otherwise. <br/>
+| - Changes the direcrion to North if the stack is empty or if the last number from the stack is 0, the direction gets set to South otherwise. <br/>
+; - If the last number isn't equal to the second to last one then the pointer moves an extra cell by the direction it already had. <br/>
 
 ## Input
-{ - Prompts the user for a string that will get pushed to the stack.
-} - Prompts the user for a number that will get pushed to the stack.
+{ - Prompts the user for a string that will get pushed to the stack. <br/>
+} - Prompts the user for a number that will get pushed to the stack. <br/>
 
 ## Output
-( - Outputs a character.
-) - Outputs a number.
-[ - Outputs the entire stack as a string.
-] - Outputs the entire stack as numbers.
+( - Outputs a character. <br/>
+) - Outputs a number. <br/>
+[ - Outputs the entire stack as a string. <br/>
+] - Outputs the entire stack as numbers. <br/>
 
 ## Miscellaneous
-@ - Gets the last number from the stack, rounds it, and does the next instruction that number amount of times (Basically a loop).
-\# - Skips the next instruction.
-= - Duplicates the last number from the stack.
-? - Goes in a random cardinal direction.
-! - Goes in a random cardinal or intercardinal direction.
-$ - Removes the last number from the stack.
-§ - Pushes the stack size as a number to the stack.
+@ - Gets the last number from the stack, rounds it, and does the next instruction that number amount of times (Basically a loop). <br/>
+\# - Skips the next instruction. <br/>
+= - Duplicates the last number from the stack. <br/>
+? - Goes in a random cardinal direction. <br/>
+! - Goes in a random cardinal or intercardinal direction. <br/>
+$ - Removes the last number from the stack. <br/>
+§ - Pushes the stack size as a number to the stack. <br/>
 
 ## File Operations
 , - Gets the last two numbers, rounds them, and uses them as coordinates to look at the program board and pushes the character it founds at the x,y position to the stack. (First the program takes a number that will be **the x position** then a number that will be **the y position**).
