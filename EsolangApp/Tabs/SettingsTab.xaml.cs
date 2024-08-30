@@ -13,14 +13,17 @@ partial class SettingsTab : ContentPage {
 		PICtoggle.IsToggled = Globals.Settings.PerformInitialChecks;
 		CREtoggle.IsToggled = Globals.Settings.CauseRuntimeErrors;
         WAtoggle.IsToggled = Globals.Settings.WrapAround;
+        LOGtoggle.IsToggled = Globals.Settings.EnableLogging;
 		
 		PICtoggle.Toggled += onTogglePIC;
 		CREtoggle.Toggled += onToggleCRE;
         WAtoggle.Toggled += onToggleWA;
-		
+		LOGtoggle.Toggled += onToggleLOG;
+        
 		updateExecPath();
         
         SeedLabel.Text = $"Seed: {Globals.Settings.Seed}";
+        LogPath.Text = $"Log Path: {Globals.Settings.LogDir}";
 	}
 	
 	void updateExecPath() {
@@ -42,6 +45,11 @@ partial class SettingsTab : ContentPage {
         Globals.Settings.WrapAround = !Globals.Settings.WrapAround;
         Globals.OnAppSleep();
     }
+    
+    void onToggleLOG(object s, EventArgs e) {
+        Globals.Settings.EnableLogging = !Globals.Settings.EnableLogging;
+        Globals.OnAppSleep();
+    }
 	
 	void onExecPathResetClick(object s, EventArgs e) {
 		Globals.ExecFile = Path.Combine(Globals.LOCAL_DATA, Globals.DEF_EXEC_FILE);
@@ -50,7 +58,7 @@ partial class SettingsTab : ContentPage {
 	}
 	
 	async void onExecPathClick(object s, EventArgs e) {
-		string r = await DisplayPromptAsync("Select new Path", "Enter a new Execution file path:", initialValue: Globals.ExecFile, keyboard: Keyboard.Url);
+		string r = await DisplayPromptAsync("Select new path", "Enter a new execution file path:", initialValue: Globals.ExecFile, keyboard: Keyboard.Url);
 		if(File.Exists(r)) {
 			Globals.ExecFile = r;
 			updateExecPath();
@@ -70,5 +78,20 @@ partial class SettingsTab : ContentPage {
             SeedLabel.Text = $"Seed: {n}";
             Globals.OnAppSleep();
         } else if(!string.IsNullOrEmpty(r)) await DisplayAlert("Error", $"{r} is not a valid seed (an integer)", "Ok");
+    }
+    
+    void onLogcPathResetClick(object s, EventArgs e) {
+        string logDir = Path.Combine(Globals.LOCAL_DATA,"EsolangLogs");
+        if(!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
+        Globals.Settings.LogDir = logDir;
+        LogPath.Text = $"Log Path: {logDir}";
+    }
+    
+    async void onLogPathClick(object s, EventArgs e) {
+    	string r = await DisplayPromptAsync("Select new Log path:", "Enter a new logging file path:", initialValue: Globals.Settings.LogDir, keyboard: Keyboard.Url);
+		if(Directory.Exists(r)) {
+			Globals.Settings.LogDir = r;
+			LogPath.Text = $"Log Path: {r}";
+		} else if(r != null) await DisplayAlert("Error", $"{r} is not a valid directory", "Ok");
     }
 }

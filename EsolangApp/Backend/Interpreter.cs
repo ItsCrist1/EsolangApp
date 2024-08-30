@@ -10,7 +10,6 @@ using System.Text.Json.Serialization;
 
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
-using EsolangApp;
 
 namespace EsolangApp;
 
@@ -23,16 +22,24 @@ public struct Settings {
     [JsonInclude] public bool CauseRuntimeErrors;
     [JsonInclude] public int Seed;
     [JsonInclude] public bool WrapAround;
+    [JsonInclude] public string LogDir;
+    [JsonInclude] public bool EnableLogging;
 
     [JsonConstructor]
-    public Settings(bool PerformInitialChecks, bool CauseRuntimeErrors, int Seed, bool WrapAround) {
+    public Settings(bool PerformInitialChecks, bool CauseRuntimeErrors, int Seed, bool WrapAround, string LogDir, bool EnableLogging) {
         this.PerformInitialChecks = PerformInitialChecks;
         this.CauseRuntimeErrors = CauseRuntimeErrors;
         this.Seed = Seed;
         this.WrapAround = WrapAround;
+        this.LogDir = LogDir;
+        this.EnableLogging = EnableLogging;
     }
 
-    public static Settings Default => new Settings(true,true,0,true);
+    public static Settings Default() {
+        string logDir = Path.Combine(Globals.LOCAL_DATA,"EsolangLogs");
+        if(!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
+        return new(true,true,0,true,logDir,true);
+    }
 }
 
 record struct Pos {
@@ -99,29 +106,20 @@ class Result {
     }
 }
 
-
-// TODO: Implement a logging system
-
-/*class Logger {
+class Logger {
     readonly string file;
-    readonly StreamWriter writer;
     
-    public Logger(string file) {
+    public Logger(string file, bool logInit=true) {
         this.file = file;
-        writer = new(file);
-        
-        writer.WriteLine($"Logging began: {DateTime.Now}\n");
+        if(logInit) File.WriteAllText(file, $"[{DateTime.Now}] Debugging started\n\n");
     }
     
-    ~Logger() {
-        writer.Write($"\nLogging ended: {DateTime.Now}", true);
-        writer.Dispose();
+    public void Log(string str) {
+        File.AppendAllText(file, $"[{DateTime.Now}] {safenStr(str)}\n\n");
     }
     
-    public void Log(string text) {
-        writer.WriteLine($"[{DateTime.Now}] {text}", true);
-    }
-}*/
+    string safenStr(string str) => str;
+}
 
 class InitError {
     readonly InitErrorType initErrorType;
@@ -138,13 +136,21 @@ class InitError {
 class Error {
     readonly ErrorType errorType;
     readonly string additionalInfo;
+    readonly Settings settings;
+    readonly Logger logger;
 
-    public Error(ErrorType errorType, string additionalInfo) {
+    public Error(ErrorType errorType, string additionalInfo, Settings settings, Logger logger) {
         this.errorType = errorType;
         this.additionalInfo = additionalInfo;
+        this.settings = settings;
+        this.logger = logger;
     }
 
-    public void Cause() => throw new Exception($"Esolang error\nType: {errorType}\nAdditional Info: {additionalInfo}");
+    public void Cause() {
+        string str = $"Esolang error\nType: {errorType}\nAdditional Info: {additionalInfo}";
+        if(settings.EnableLogging) logger.Log(str);
+        throw new Exception(str);
+    }
 }
 
 class Interpreter : Utils {
@@ -163,6 +169,7 @@ class Interpreter : Utils {
     ContentPage contentPage;
     Random rand;
     Action<object,EventArgs> resetFunc;
+    Logger logger;
     
     char[,] board;
     
@@ -174,11 +181,12 @@ class Interpreter : Utils {
        But I really think it'll be worth it :)
        Dictionary<char,Action> operations; */
 
-    public Interpreter(Settings settings, ContentPage contentPage, Action<object,EventArgs> resetFunc) {
+    public Interpreter(Settings settings, ContentPage contentPage, Action<object,EventArgs> resetFunc, string logDir) {
         this.settings = settings;
         this.contentPage = contentPage;
         this.rand = new(settings.Seed);
         this.resetFunc = resetFunc;
+        this.logger = new(Path.Combine(logDir, $"Log_{Directory.GetFiles(logDir).Count()+1}.log"), settings.EnableLogging);
     }
     
     public void ChangeSettings(Settings settings) {
@@ -220,24 +228,28 @@ class Interpreter : Utils {
     }
     
     public Result Reset(string code, bool PIC) {
-        if(PIC) performInitChecks(code);
+        if(PIC && settings.PerformInitialChecks) performInitChecks(code);
         board = strToBoard(code);
         resetVars();
         
-        return new(board,0,output,new(),new(),dir,steps,true);
+        Result res = new(board,0,output,new(),new(),dir,steps,true);
+        if(settings.EnableLogging) logger.Log($"Resetted to {code} {(PIC?"while":"without")} performing initial checks\nResult: {res.GetStr()}");
+        return res;
     }
 
     async public Task<Result> Interpret(string code) {
-        performInitChecks(code);
+        if(settings.PerformInitialChecks) performInitChecks(code);
         board = strToBoard(code);
         resetVars();
 
-        while(c != _EXIT) await Step();
+        while(c != _EXIT) await Step(false);
 
-        return new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,true);
+        Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,true);
+        if(settings.EnableLogging) logger.Log($"Interpretted {code}\nResult: {res.GetStr()}");
+        return res;
     }
     
-    async public Task<Result> Step() {
+    async public Task<Result> Step(bool log) {
         bool b = false;
         c = board[pos.x,pos.y];
         sw.Start();
@@ -252,7 +264,7 @@ class Interpreter : Utils {
             } else if(char.IsDigit(c)) numBuf += c;
             else if(!DECIMALS.Contains(c)) {
                 if(c == '-' || c == '.') numBuf += c;
-                else new Error(ErrorType.InvalidNumber, "Cannot read such number");
+                else new Error(ErrorType.InvalidNumber, "Cannot read such number",settings,logger);
             }
         } else if(strMode) {
             if(c == _STR_MODE) {
@@ -266,7 +278,7 @@ class Interpreter : Utils {
                 t = toLoop;
                 toLoop = 0;
             } for(int i=0; i < t; i++) 
-                if((await handle(c))) b = true;
+                if(await handle(c)) b = true;
         } if(c != _EXIT) pos += dir;
 
         if(settings.WrapAround) {
@@ -277,13 +289,15 @@ class Interpreter : Utils {
             else if(pos.y < 0) pos.y = board.GetLength(1) - 1;
         } else if(!pos.IsWithin(board)) {
             resetFunc(null,null);
-            new Error(ErrorType.InvalidPtrPos, $"The pointer left it's bounds\nPointer: {pos.TS}\nBounds: ({board.GetLength(0)},{board.GetLength(1)})").Cause();
+            new Error(ErrorType.InvalidPtrPos, $"The pointer left it's bounds\nPointer: {pos.TS}\nBounds: ({board.GetLength(0)},{board.GetLength(1)})",settings,logger).Cause();
         }
 
         steps++;
         sw.Stop();
         
-        return new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,b);
+        Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,b);
+        if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr()}");
+        return res;
     }
     
     async Task<bool> handle(char c) {
@@ -302,7 +316,7 @@ class Interpreter : Utils {
             case _ADD:
             if(stack.Count == 1) stack.Push(stack.Pop() + 1);
             else if(stack.Count > 1) stack.Push(stack.Pop() + stack.Pop());
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot perform addition on an empty stack").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot perform addition on an empty stack",settings,logger).Cause();
             break;
 
             case _SUBTRACT:
@@ -310,13 +324,13 @@ class Interpreter : Utils {
             else if(stack.Count > 1) {
                 double x = stack.Pop(), y = stack.Pop();
                 stack.Push(y - x);
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform substraction on an empty stack").Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform substraction on an empty stack",settings,logger).Cause();
             break;
 
             case _MULTIPLY:
             if(stack.Count == 1) { }
             else if(stack.Count > 1) stack.Push(stack.Pop() * stack.Pop());
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot perform multiplication on an empty stack").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot perform multiplication on an empty stack",settings,logger).Cause();
             break;
 
             case _DIVIDE:
@@ -324,7 +338,7 @@ class Interpreter : Utils {
             else if(stack.Count > 1){
                 double x = stack.Pop(), y = stack.Pop();
                 stack.Push(y / x);
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform division on an empty stack").Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform division on an empty stack",settings,logger).Cause();
             break;
 
             case _MODULO:
@@ -332,7 +346,7 @@ class Interpreter : Utils {
             else if(stack.Count > 1) {
                 double x = stack.Pop(), y = stack.Pop();
                 stack.Push(y % x);
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform modulo on an empty stack").Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform modulo on an empty stack",settings,logger).Cause();
             break;
 
             case _POW:
@@ -340,7 +354,7 @@ class Interpreter : Utils {
             else if(stack.Count > 1) {
                 double x = stack.Pop(), y = stack.Pop();
                 stack.Push(Math.Pow(y, x));
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot use powers on an empty stack").Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot use powers on an empty stack",settings,logger).Cause();
             break;
 
             case _HORIZONTAL_IF:
@@ -357,7 +371,7 @@ class Interpreter : Utils {
             sw.Stop();
             string d1 = await contentPage.DisplayPromptAsync("Number Input", "Enter a number:", "OK", null, placeholder: "-134.67", keyboard: Keyboard.Numeric);
             sw.Start();
-            if(string.IsNullOrEmpty(d1) && b) new Error(ErrorType.InvalidNumberInput, "You cannot not input anything (Expected a number)").Cause();
+            if(string.IsNullOrEmpty(d1) && b) new Error(ErrorType.InvalidNumberInput, "You cannot not input anything (Expected a number)",settings,logger).Cause();
 
             if(double.TryParse(d1, out double d2)) stack.Push(d2);
             else stack.Push(0);
@@ -367,36 +381,36 @@ class Interpreter : Utils {
             sw.Stop();
             string s = await contentPage.DisplayPromptAsync("String Input", "Enter a string:", "OK", null, placeholder: "Some string...", keyboard: Keyboard.Plain);
             sw.Start();
-            if(string.IsNullOrEmpty(s) && b) new Error(ErrorType.InvalidStringInput, "You cannot not input anything (Expected a string)").Cause();
+            if(string.IsNullOrEmpty(s) && b) new Error(ErrorType.InvalidStringInput, "You cannot not input anything (Expected a string)",settings,logger).Cause();
             for(int j=s.Length-1; j >= 0; j--) stack.Push(s[j]);
             break;
 
             case _STR_OUTPUT:
             if(stack.Count > 0) output += (char)stack.Pop();
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
             break;
 
             case _NUM_OUTPUT:
             if(stack.Count > 0) output += stack.Pop();
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
             break;
 
             case _STR_DUMP:
             if(stack.Count > 0) while(stack.Count > 0) output += (char)stack.Pop();
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as string").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as string",settings,logger).Cause();
             break;
 
             case _NUM_DUMP:
             if(stack.Count > 0) while (stack.Count > 0) output += stack.Pop();
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
             break;
 
             case _LOOP:
             if(stack.Count > 0) {
                 double x = stack.Pop();
                 if(x > 0) toLoop = (int)Math.Round(x);
-                else if(b) new Error(ErrorType.InvalidRange, "Cannot loop from a negative number").Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot loop from an empty stack").Cause();
+                else if(b) new Error(ErrorType.InvalidRange, "Cannot loop from a negative number",settings,logger).Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot loop from an empty stack",settings,logger).Cause();
             break;
 
             case _DUPLICATE:
@@ -418,13 +432,13 @@ class Interpreter : Utils {
             if(stack.Count > 0) {
                 double n = stack.Pop();
                 if(n >= 0) stack.Push(Math.Sqrt(n));
-                else if(b) new Error(ErrorType.InvalidRange, "Cannot get the radial of a negative number").Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the radical in an empty stack").Cause();
+                else if(b) new Error(ErrorType.InvalidRange, "Cannot get the radial of a negative number",settings,logger).Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the radical in an empty stack",settings,logger).Cause();
             break;
 
             case _ROUND:
             if(stack.Count > 0) stack.Push(Math.Round(stack.Pop()));
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot round from an empty stack").Cause();
+            else if(b) new Error(ErrorType.EmptyStack, "Cannot round from an empty stack",settings,logger).Cause();
             break;
 
             case _NUM_MODE: numMode = true; break;
@@ -435,8 +449,8 @@ class Interpreter : Utils {
                 int _ = (int)Math.Round(stack.Pop());
                 Pos p = new Pos((int)Math.Round(stack.Pop()), _);
                 if(p.IsWithin(board)) stack.Push(board[p.x, p.y]);
-                else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})").Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least two items (x,y) to use get").Cause();
+                else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least two items (x,y) to use get",settings,logger).Cause();
             break;
 
             case _SET:
@@ -445,8 +459,8 @@ class Interpreter : Utils {
                 int _ = (int)Math.Round(stack.Pop());
                 Pos p = new Pos((int)Math.Round(stack.Pop()), _);
                 if(p.IsWithin(board)) board[p.x,p.y] = (char)chr;
-                else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})").Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least three items (x,y) and a character to use set").Cause();
+                else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
+            } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least three items (x,y) and a character to use set",settings,logger).Cause();
             break;
 
             case _EQUAL_IF:

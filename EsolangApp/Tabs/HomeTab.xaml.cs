@@ -28,7 +28,7 @@ partial class HomeTab : ContentPage {
         
         Globals.OnExecPathChange();
         
-        itptr = new Interpreter(Globals.Settings, this, onReset);
+        itptr = new(Globals.Settings, this, onReset, Globals.Settings.LogDir);
         Result res = itptr.Reset(CodeEditor.Text,false);
         
         populateDebugGrid(res.board,new(0,0));
@@ -41,8 +41,8 @@ partial class HomeTab : ContentPage {
         DebugGrid.RowDefinitions.Clear();
         DebugGrid.ColumnDefinitions.Clear();
         
-        for(int i=0; i < sz.Item1; i++) DebugGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-        for(int i=0; i < sz.Item2; i++) DebugGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        for(int i=0; i < sz.Item1; i++) DebugGrid.RowDefinitions.Add(new() { Height = GridLength.Auto });
+        for(int i=0; i < sz.Item2; i++) DebugGrid.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
 
         for(int y=0; y < sz.Item1; y++)
             for(int x=0; x < sz.Item2; x++)
@@ -72,6 +72,7 @@ partial class HomeTab : ContentPage {
              itptr.ChangeSettings(Globals.Settings);
              Globals.SettingsChanged = false;
         }
+        
         Result res = await itptr.Interpret(CodeEditor.Text);
         OutputLabel.Text = res.GetStr();
         atStart =  false;
@@ -89,9 +90,9 @@ partial class HomeTab : ContentPage {
                 itptr.ChangeSettings(Globals.Settings);
                 Globals.SettingsChanged = false;
             } itptr.Reset(CodeEditor.Text,true);
-            res = await itptr.Step();
+            res = await itptr.Step(true);
             atStart = false;
-        } else res = await itptr.Step();
+        } else res = await itptr.Step(true);
         
         stepButton.IsEnabled = !res.done;
         resetButton.IsEnabled = !atStart;

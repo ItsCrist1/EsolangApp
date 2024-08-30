@@ -78,5 +78,39 @@
                    VerticalTextAlignment="Center"
                    FontSize="18"/>
         </HorizontalStackLayout>
+        
+        <Label Text="--- LOGGING ---"
+               HorizontalOptions="Center"
+               FontSize="18"
+               Padding="0,10,0,0"/>
+               
+        
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="LOGtoggle"/>
+            
+            <Label Text="Enabled"
+                   VerticalOptions="Center"
+                   FontSize="18"/>
+        </HorizontalStackLayout>
+        
+        <Grid>
+            <Label x:Name="LogPath"
+                   VerticalOptions="Center"
+                   FontSize="18"
+                   MaximumWidthRequest="270"
+                   HorizontalOptions="Start"
+                   Margin="10,0,0,0"/>
+            <Button Text="Reset"
+                    TextColor="LightGrey"
+                    Clicked="onLogcPathResetClick"
+                    CornerRadius="10"
+                    HorizontalOptions="End"
+                    Margin="0,0,85,0"/>
+            <Button Text="Change"
+                    TextColor="LightGrey"
+                    Clicked="onLogPathClick"
+                    CornerRadius="10"
+                    HorizontalOptions="End"/>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>
