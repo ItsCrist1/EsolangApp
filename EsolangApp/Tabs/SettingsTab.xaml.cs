@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.ApplicationModel;
 
 namespace EsolangApp;
 
@@ -93,5 +94,9 @@ partial class SettingsTab : ContentPage {
 			Globals.Settings.LogDir = r;
 			LogPath.Text = $"Log Path: {r}";
 		} else if(r != null) await DisplayAlert("Error", $"{r} is not a valid directory", "Ok");
+    }
+    
+    async void onDocsClick(object s, EventArgs e) {
+        await Launcher.OpenAsync("https://github.com/ItsCrist1/EsolangApp/blob/main/README.md");
     }
 }

@@ -6,6 +6,7 @@
     <SingleProject>true</SingleProject>
   </PropertyGroup>
   <ItemGroup>
+    <MauiImage Include="Resources/Images/home.png" />
     <EmbeddedResource Update="TabRoot.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -15,13 +16,13 @@
     <EmbeddedResource Update="Tabs/SettingsTab.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="../Assets/home.png" />
   </ItemGroup>
   <PropertyGroup>
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
   </PropertyGroup>
   <PropertyGroup>
-    <LangVersion>
-    </LangVersion>
+    <LangVersion>latestMajor</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Nullable>disable</Nullable>
@@ -30,7 +31,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <PropertyGroup>
-    <UseMauiEssentials>false</UseMauiEssentials>
+    <UseMauiEssentials>true</UseMauiEssentials>
   </PropertyGroup>
   <PropertyGroup>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>

@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using System.Globalization;
 
 namespace EsolangApp;
 
@@ -95,8 +96,14 @@ class Result {
 
     public string GetStr() {
         StringBuilder str = new();
-        str.AppendLine($"\nOutput: {(output == string.Empty ? "Nothing." : output)}").Append("Stack:");
+        
+        string t = output == string.Empty ? "Nothing." : output;
+        if(double.TryParse(t,out double n)) t = n.ToString("N0", CultureInfo.InvariantCulture);
+        
+        str.AppendLine($"\nOutput: {t}").Append("Stack:");
+        
         foreach(float i in stack) str.Append($" {i};");
+        
         str.AppendLine()
            .AppendLine($"Pos: {pos.x} | {pos.y}")
            .AppendLine($"Dir: {dir}")
@@ -328,13 +335,13 @@ class Interpreter : Utils {
             break;
 
             case _MULTIPLY:
-            if(stack.Count == 1) { }
+            if(stack.Count == 1) stack.Push(stack.Pop() * 2);
             else if(stack.Count > 1) stack.Push(stack.Pop() * stack.Pop());
             else if(b) new Error(ErrorType.EmptyStack, "Cannot perform multiplication on an empty stack",settings,logger).Cause();
             break;
 
             case _DIVIDE:
-            if(stack.Count == 1) { }
+            if(stack.Count == 1) stack.Push(stack.Pop() / 2);
             else if(stack.Count > 1){
                 double x = stack.Pop(), y = stack.Pop();
                 stack.Push(y / x);
@@ -342,7 +349,7 @@ class Interpreter : Utils {
             break;
 
             case _MODULO:
-            if(stack.Count == 1) { }
+            if(stack.Count == 1) stack.Push(stack.Pop() % 1);
             else if(stack.Count > 1) {
                 double x = stack.Pop(), y = stack.Pop();
                 stack.Push(y % x);
@@ -447,7 +454,7 @@ class Interpreter : Utils {
             case _GET:
             if(stack.Count > 1) {
                 int _ = (int)Math.Round(stack.Pop());
-                Pos p = new Pos((int)Math.Round(stack.Pop()), _);
+                Pos p = new Pos(_,(int)Math.Round(stack.Pop()));
                 if(p.IsWithin(board)) stack.Push(board[p.x, p.y]);
                 else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
             } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least two items (x,y) to use get",settings,logger).Cause();
@@ -457,7 +464,7 @@ class Interpreter : Utils {
             if(stack.Count > 2) {
                 int chr = (int)Math.Round(stack.Pop());
                 int _ = (int)Math.Round(stack.Pop());
-                Pos p = new Pos((int)Math.Round(stack.Pop()), _);
+                Pos p = new Pos(_,(int)Math.Round(stack.Pop()));
                 if(p.IsWithin(board)) board[p.x,p.y] = (char)chr;
                 else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
             } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least three items (x,y) and a character to use set",settings,logger).Cause();

@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:EsolangApp"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="EsolangApp.SettingsTab">
-    
+    <ScrollView>
     <VerticalStackLayout BackgroundColor="Transparent">
         <Label Text="--- PREFERENCES ---"
                HorizontalOptions="Center"
@@ -112,5 +112,18 @@
                     CornerRadius="10"
                     HorizontalOptions="End"/>
         </Grid>
+        
+        <Label Text="--- DOCS ---"
+               HorizontalOptions="Center"
+               FontSize="18"
+               Padding="0,10,0,0"/>
+               
+        <Button Text="Documentation" 
+                FontSize="20"
+                HorizontalOptions="Center"
+                TextColor="#FFF"
+                Margin="10"
+                Clicked="onDocsClick"/>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

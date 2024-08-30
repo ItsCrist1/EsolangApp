@@ -20,7 +20,6 @@ partial class HomeTab : ContentPage {
     
     public HomeTab() {
         InitializeComponent();
-        BindingContext = this;
         read();
 
         Globals.OnAppSleepEvent += write;
@@ -51,6 +50,7 @@ partial class HomeTab : ContentPage {
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     FontSize = 14,
+                    Padding = 5,
                     BackgroundColor = h.Item1==y && h.Item2==x ? HIGHLIGHT_COL : NORMAL_COL
                 }, y,x);
     }
