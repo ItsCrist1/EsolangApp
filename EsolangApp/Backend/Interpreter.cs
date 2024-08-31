@@ -117,15 +117,20 @@ class Result {
 }
 
 class Logger {
+    const bool CONSOLE_LOG = false;
     readonly string file;
     
     public Logger(string file, bool logInit=true) {
         this.file = file;
-        if(logInit) File.WriteAllText(file, $"[{DateTime.Now}] Debugging started\n\n");
+        if(!logInit) return;
+        string s = $"[{DateTime.Now}] Debugging started\n";
+        if(CONSOLE_LOG) File.WriteAllText(file, $"{s}\n");
     }
     
     public void Log(string str) {
-        File.AppendAllText(file, $"[{DateTime.Now}] {str}\n\n");
+        string s = $"[{DateTime.Now}] {str}\n";
+        File.AppendAllText(file, $"{s}\n");
+        if(CONSOLE_LOG) Console.WriteLine(s);
     }
 }
 
