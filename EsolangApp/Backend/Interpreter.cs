@@ -26,9 +26,10 @@ public struct Settings {
     [JsonInclude] public string LogDir;
     [JsonInclude] public bool EnableLogging;
     [JsonInclude] public uint Precision;
+    [JsonInclude] public bool Delimeter;
 
     [JsonConstructor]
-    public Settings(bool PerformInitialChecks, bool CauseRuntimeErrors, int Seed, bool WrapAround, string LogDir, bool EnableLogging, uint Precision) {
+    public Settings(bool PerformInitialChecks, bool CauseRuntimeErrors, int Seed, bool WrapAround, string LogDir, bool EnableLogging, uint Precision, bool Delimeter) {
         this.PerformInitialChecks = PerformInitialChecks;
         this.CauseRuntimeErrors = CauseRuntimeErrors;
         this.Seed = Seed;
@@ -36,12 +37,13 @@ public struct Settings {
         this.LogDir = LogDir;
         this.EnableLogging = EnableLogging;
         this.Precision = Precision;
+        this.Delimeter = Delimeter;
     }
 
     public static Settings Default() {
         string logDir = Path.Combine(Globals.LOCAL_DATA,"EsolangLogs");
         if(!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
-        return new(true,true,0,true,logDir,true,2);
+        return new(true,true,0,true,logDir,true,2,true);
     }
 }
 
@@ -96,15 +98,14 @@ class Result {
     
     static public Result Null => new Result(null,0,null,null,new Pos(0),(Dir)0,0,false);
 
-    public string GetStr(uint precision) {
+    public string GetStr(Settings settings) {
         StringBuilder str = new();
         
         string t = output == string.Empty ? "Nothing." : output;
-        if(double.TryParse(t,out double n)) t = n.ToString("N" + precision);
         
         str.AppendLine($"\nOutput: {t}").Append("Stack:");
         
-        foreach(float i in stack) str.Append($" {i};");
+        foreach(double i in stack) str.Append($" {i};");
         
         str.AppendLine()
            .AppendLine($"Pos: {pos.x} | {pos.y}")
@@ -240,7 +241,7 @@ class Interpreter : Utils {
         resetVars();
         
         Result res = new(board,0,output,new(),new(),dir,steps,true);
-        if(settings.EnableLogging) logger.Log($"Resetted to {code} {(PIC?"while":"without")} performing initial checks\nResult: {res.GetStr(settings.Precision)}");
+        if(settings.EnableLogging) logger.Log($"Resetted to {code} {(PIC?"while":"without")} performing initial checks\nResult: {res.GetStr(settings)}");
         return res;
     }
 
@@ -252,7 +253,7 @@ class Interpreter : Utils {
         while(c != _EXIT) await Step(false);
 
         Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,true);
-        if(settings.EnableLogging) logger.Log($"Interpretted {code}\nResult: {res.GetStr(settings.Precision)}");
+        if(settings.EnableLogging) logger.Log($"Interpretted {code}\nResult: {res.GetStr(settings)}");
         return res;
     }
     
@@ -303,7 +304,7 @@ class Interpreter : Utils {
         sw.Stop();
         
         Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,b);
-        if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr(settings.Precision)}");
+        if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr(settings)}");
         return res;
     }
     
@@ -400,7 +401,7 @@ class Interpreter : Utils {
             break;
 
             case _NUM_OUTPUT:
-            if(stack.Count > 0) output += stack.Pop();
+            if(stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
             else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
             break;
 
@@ -410,7 +411,7 @@ class Interpreter : Utils {
             break;
 
             case _NUM_DUMP:
-            if(stack.Count > 0) while (stack.Count > 0) output += stack.Pop();
+            if(stack.Count > 0) while (stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
             else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
             break;
 

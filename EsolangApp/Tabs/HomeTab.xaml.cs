@@ -39,7 +39,7 @@ partial class HomeTab : ContentPage {
         DebugGrid.Children.Clear();
         DebugGrid.RowDefinitions.Clear();
         DebugGrid.ColumnDefinitions.Clear();
-        
+
         for(int i=0; i < sz.Item1; i++) DebugGrid.RowDefinitions.Add(new() { Height = GridLength.Auto });
         for(int i=0; i < sz.Item2; i++) DebugGrid.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
 
@@ -50,7 +50,7 @@ partial class HomeTab : ContentPage {
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
                     FontSize = 14,
-                    Padding = 5,
+                    Padding = 3,
                     BackgroundColor = h.Item1==y && h.Item2==x ? HIGHLIGHT_COL : NORMAL_COL
                 }, y,x);
     }
@@ -74,7 +74,7 @@ partial class HomeTab : ContentPage {
         }
         
         Result res = await itptr.Interpret(CodeEditor.Text);
-        OutputLabel.Text = res.GetStr(Globals.Settings.Precision);
+        OutputLabel.Text = res.GetStr(Globals.Settings);
         atStart =  false;
         
         stepButton.IsEnabled = false;
@@ -97,7 +97,7 @@ partial class HomeTab : ContentPage {
         stepButton.IsEnabled = !res.done;
         resetButton.IsEnabled = !atStart;
         
-        OutputLabel.Text = res.GetStr(Globals.Settings.Precision);
+        OutputLabel.Text = res.GetStr(Globals.Settings);
         
         populateDebugGrid(res.board,res.pos.TT);
     }

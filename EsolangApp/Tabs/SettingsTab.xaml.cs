@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+
 using System.Text.Json;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
@@ -15,11 +16,13 @@ partial class SettingsTab : ContentPage {
 		CREtoggle.IsToggled = Globals.Settings.CauseRuntimeErrors;
         WAtoggle.IsToggled = Globals.Settings.WrapAround;
         LOGtoggle.IsToggled = Globals.Settings.EnableLogging;
+        DStoggle.IsToggled = Globals.Settings.Delimeter;
 		
 		PICtoggle.Toggled += onTogglePIC;
 		CREtoggle.Toggled += onToggleCRE;
         WAtoggle.Toggled += onToggleWA;
 		LOGtoggle.Toggled += onToggleLOG;
+        DStoggle.Toggled += onToggleDS;
         
 		updateExecPath();
         
@@ -50,6 +53,11 @@ partial class SettingsTab : ContentPage {
     
     void onToggleLOG(object s, EventArgs e) {
         Globals.Settings.EnableLogging = !Globals.Settings.EnableLogging;
+        Globals.OnAppSleep();
+    }
+    
+    void onToggleDS(object s, EventArgs e) {
+        Globals.Settings.Delimeter = !Globals.Settings.Delimeter;
         Globals.OnAppSleep();
     }
 	
@@ -98,7 +106,7 @@ partial class SettingsTab : ContentPage {
     }
     
     async void onDocsClick(object s, EventArgs e) {
-        await Launcher.OpenAsync("https://github.com/ItsCrist1/EsolangApp/blob/main/README.md");
+        await Launcher.OpenAsync("https://github.com/ItsCrist1/EsolangApp?tab=readme-ov-file#instructions");
     }
     
     void onPrecisionResetClick(object s, EventArgs e) {

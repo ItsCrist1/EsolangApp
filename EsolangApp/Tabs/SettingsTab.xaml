@@ -50,6 +50,25 @@
             </HorizontalStackLayout>
         </Grid>
         
+        <Grid Margin="10">
+            <Label x:Name="PrecisionLabel"
+                   VerticalOptions="Center"
+                   FontSize="20"
+                   MaximumWidthRequest="235"
+                   HorizontalOptions="Start"/>
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   Spacing="10">
+                <Button Text="Reset"
+                        TextColor="LightGrey"
+                        Clicked="onPrecisionResetClick"
+                        CornerRadius="10"/>
+                <Button Text="Change"
+                        TextColor="LightGrey"
+                        Clicked="onPrecisionClick"
+                        CornerRadius="10"/>
+            </HorizontalStackLayout>
+        </Grid>
+        
         <Label Text="--- SETTINGS ---"
                HorizontalOptions="Center"
                FontSize="18"
@@ -75,6 +94,14 @@
             <Switch x:Name="WAtoggle"/>
             
             <Label Text="Wrap Around"
+                   VerticalTextAlignment="Center"
+                   FontSize="18"/>
+        </HorizontalStackLayout>
+        
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="DStoggle"/>
+            
+            <Label Text="Digit Grouping"
                    VerticalTextAlignment="Center"
                    FontSize="18"/>
         </HorizontalStackLayout>
@@ -113,26 +140,6 @@
                     HorizontalOptions="End"/>
         </Grid>
         
-        <Grid Margin="10">
-            <Label x:Name="PrecisionLabel"
-                   VerticalOptions="Center"
-                   FontSize="18"
-                   MaximumWidthRequest="270"
-                   HorizontalOptions="Start"
-                   Margin="10,0,0,0"/>
-            <Button Text="Reset"
-                    TextColor="LightGrey"
-                    Clicked="onPrecisionResetClick"
-                    CornerRadius="10"
-                    HorizontalOptions="End"
-                    Margin="0,0,85,0"/>
-            <Button Text="Change"
-                    TextColor="LightGrey"
-                    Clicked="onPrecisionClick"
-                    CornerRadius="10"
-                    HorizontalOptions="End"/>
-        </Grid>
-        
         <Label Text="--- DOCS ---"
                HorizontalOptions="Center"
                FontSize="18"
@@ -145,6 +152,5 @@
                 Margin="10"
                 Clicked="onDocsClick"/>
     </VerticalStackLayout>
-    
     </ScrollView>
 </ContentPage>
