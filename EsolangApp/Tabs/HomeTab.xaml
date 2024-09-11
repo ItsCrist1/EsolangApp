@@ -103,5 +103,7 @@
                     Clicked="onRun"
                     CornerRadius="10"/>
         </HorizontalStackLayout>
+		
+		<Image x:Name="timg"/>
     </Grid>
 </ContentPage>

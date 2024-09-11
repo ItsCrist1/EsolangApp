@@ -103,17 +103,30 @@ class Result {
         
         string t = output == string.Empty ? "Nothing." : output;
         
-        str.AppendLine($"\nOutput: {t}").Append("Stack:");
+        str.AppendLine($"\nOutput: {(t == string.Empty ? "Nothing" : t)}").Append("Stack:");
         
-        foreach(double i in stack) str.Append($" {i};");
+        if(stack.Count == 0) str.Append(" Empty.");
+		else foreach(double i in stack) str.Append($" {i};");
         
         str.AppendLine()
-           .AppendLine($"Pos: {pos.x} | {pos.y}")
-           .AppendLine($"Dir: {dir}")
+           .AppendLine($"Pos: {pos.TS}")
+           .AppendLine($"Dir: {dirTS(dir)}")
            .AppendLine($"Steps: {steps}")
            .Append($"Execution Time: {execTime}ms");
         return str.ToString();
     }
+	
+	string dirTS(Dir d) => d switch {
+		Dir.N => "North",
+		Dir.E => "East",
+		Dir.S => "South",
+		Dir.W => "West",
+		
+		Dir.NE => "North-East",
+		Dir.NW => "North-West",
+		Dir.SE => "South-East",
+		Dir.SW => "South-West"
+	};
 }
 
 class Logger {
