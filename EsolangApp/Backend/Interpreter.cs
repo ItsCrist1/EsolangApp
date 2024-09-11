@@ -179,6 +179,19 @@ class Error {
     }
 }
 
+class CMD {
+	readonly Action syncFunc;
+	readonly Func<Task> asyncFunc;
+	
+	public CMD(Action syncFunc) => this.syncFunc = syncFunc;
+	public CMD(Func<Task> asyncFunc) => this.asyncFunc = asyncFunc;
+	
+	public async Task ExecFunc() {
+		if(asyncFunc == null) syncFunc();
+		else await asyncFunc();
+	}
+}
+
 class Interpreter : Utils {
     Stack<double> stack;
     string output;
@@ -198,14 +211,12 @@ class Interpreter : Utils {
     Logger logger;
     
     char[,] board;
+	
+	Dictionary<char,CMD> CMDS;
     
-    /* TODO: Implement a better system for handling the operations
-       Replace the massive switch statement with a dictionary
-       Declare it in the constructor and also split the logic from handle()
-       Into smaller functions for some cases and the entire logic in the
-       Dictionary for others, it'll be really annoying refactoring it
-       But I really think it'll be worth it :)
-       Dictionary<char,Action> operations; */
+    /* TODO: Implement an unknown symbol count to
+	register all of the unknown symbols if the dictionary
+	doesn't find it. */
 
     public Interpreter(Settings settings, ContentPage contentPage, Action<object,EventArgs> resetFunc, string logDir) {
         this.settings = settings;
@@ -213,6 +224,102 @@ class Interpreter : Utils {
         this.rand = new(settings.Seed);
         this.resetFunc = resetFunc;
         this.logger = new(Path.Combine(logDir, $"Log_{Directory.GetFiles(logDir).Count()+1}.log"), settings.EnableLogging);
+		
+		bool b = settings.CauseRuntimeErrors;
+		
+		this.CMDS = new() {
+			{ _NORTH, new(() => { dir = Dir.N; }) },
+			{ _SOUTH, new(() => { dir = Dir.S; }) },
+            { _EAST,  new(() => { dir = Dir.E; }) },
+			{ _WEST,  new(() => { dir = Dir.W; }) },
+			
+			{ _NORTH_EAST, new(() => { dir = Dir.NE; }) },
+			{ _NORTH_WEST, new(() => { dir = Dir.NW; }) },
+            { _SOUTH_EAST, new(() => { dir = Dir.SE; }) },
+			{ _SOUTH_WEST, new(() => { dir = Dir.SW; }) },
+			
+			{ _ADD, new(() => OP_add(b)) },
+			{ _SUBTRACT, new(() => OP_sub(b)) },
+            { _MULTIPLY, new(() => OP_mlt(b)) },
+			{ _DIVIDE, new(() => OP_div(b)) },
+			{ _MODULO, new(() => OP_mod(b)) },
+			{ _POW, new(() => OP_pow(b)) },
+			
+			{ _GET, new(() => MC_get(b)) },
+			{ _SET, new(() => MC_set(b)) },
+			
+			{ _STR_OUTPUT, new(() => {
+				if(stack.Count > 0) output += (char)stack.Pop();
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
+			})},
+			
+			{ _NUM_OUTPUT, new(() => {
+				if(stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
+			})},
+			
+			{ _STR_DUMP, new(() => {
+				if(stack.Count > 0) while(stack.Count > 0) output += (char)stack.Pop();
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as string",settings,logger).Cause();
+			})},
+			
+			{ _NUM_DUMP, new(() => {
+				if(stack.Count > 0) while (stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
+			})},
+			
+			{ _STR_INPUT, new(async () => await IP_str(b)) },
+			{ _NUM_INPUT, new(async () => await IP_num(b)) },
+			
+			{ _HORIZONTAL_IF, new(() => {
+			    if(stack.Count > 0) dir = stack.Peek() == 0 ? Dir.E : Dir.W;
+                else dir = Dir.E;
+			})},
+			
+			{ _VERTICAL_IF, new(() => {
+				if(stack.Count > 0) dir = stack.Peek() == 0 ? Dir.N : Dir.S;
+                else dir = Dir.N;
+			})},
+			
+			{ _EQUAL_IF, new(() => {if (stack.Pop() != stack.Peek()) pos += dir; }) },
+			
+			{ _LOOP, new(() => MC_loop(b)) },
+			{ _SKIP, new(() => { pos += dir; }) },
+			{ _DUPLICATE, new(() => {
+			    if(stack.Count > 0) stack.Push(stack.Peek());
+                else stack.Push(1);
+			})},
+			{ _GET_STACK_SIZE, new(() => { stack.Push(stack.Count); }) },
+			{ _POP, new(() => { stack.Pop(); }) },
+			
+			{ _STR_MODE, new(() => { strMode = true; strBuf = string.Empty; }) },
+			{ _NUM_MODE, new(() => { numMode = true; }) },
+			
+			{ _RAND_DIR_8, new(() => { dir = (Dir)rand.Next(0,8); }) },
+			{ _RAND_DIR_4, new(() => { dir = (Dir)rand.Next(0,4); }) },
+			
+			{ _INFINITY, new(() => { stack.Push(double.PositiveInfinity); }) },
+			{ _PI, new(() => { stack.Push(Math.PI); }) },
+			{ _ROUND, new(() => {
+				if(stack.Count > 0) stack.Push(Math.Round(stack.Pop()));
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot round from an empty stack",settings,logger).Cause();
+			})},
+			{ _RADICAL, new(() => MATH_radical(b)) },
+			
+			{ _SIN, new(() => {
+			    if(stack.Count > 0) stack.Push(Math.Sin(stack.Pop()));
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot get the sinus from an empty stack",settings,logger).Cause();
+			})},
+			{ _COS, new(() => {
+				if(stack.Count > 0) stack.Push(Math.Cos(stack.Pop()));
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cosinus from an empty stack",settings,logger).Cause();
+			})},
+			{ _TAN, new(() => {
+				if(stack.Count > 0) stack.Push(Math.Tan(stack.Pop()));
+                else if(b) new Error(ErrorType.EmptyStack, "Cannot get the tangent from an empty stack",settings,logger).Cause();
+			})},
+			{ _CTG, new(() => MATH_ctg(b)) }
+		};
     }
     
     public void ChangeSettings(Settings settings) {
@@ -303,8 +410,10 @@ class Interpreter : Utils {
             if(toLoop > 0) { 
                 t = toLoop;
                 toLoop = 0;
-            } for(int i=0; i < t; i++) 
-                if(await handle(c)) b = true;
+            } for(int i=0; i < t; i++) {
+				if(c == _EXIT) b = true;
+				else if(CMDS.Keys.Contains(c)) await CMDS[c].ExecFunc();
+			}
         } if(c != _EXIT) pos += dir;
 
         if(settings.WrapAround) {
@@ -325,204 +434,111 @@ class Interpreter : Utils {
         if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr(settings)}");
         return res;
     }
-    
-    async Task<bool> handle(char c) {
-        bool b = settings.CauseRuntimeErrors;
-        
-        switch (c) {
-            case _NORTH: dir = Dir.N; break;
-            case _EAST: dir = Dir.E; break;
-            case _WEST: dir = Dir.W; break;
-            case _SOUTH: dir = Dir.S; break;
-            case _NORTH_EAST: dir = Dir.NE; break;
-            case _NORTH_WEST: dir = Dir.NW; break;
-            case _SOUTH_EAST: dir = Dir.SE; break;
-            case _SOUTH_WEST: dir = Dir.SW; break;
-
-            case _ADD:
-            if(stack.Count == 1) stack.Push(stack.Pop() + 1);
-            else if(stack.Count > 1) stack.Push(stack.Pop() + stack.Pop());
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot perform addition on an empty stack",settings,logger).Cause();
-            break;
-
-            case _SUBTRACT:
-            if(stack.Count == 1) stack.Push(stack.Pop() - 1);
-            else if(stack.Count > 1) {
-                double x = stack.Pop(), y = stack.Pop();
+	
+	void OP_add(bool b) {
+		if(stack.Count == 1) stack.Push(stack.Pop() + 1);
+        else if(stack.Count > 1) stack.Push(stack.Pop() + stack.Pop());
+        else if(b) new Error(ErrorType.EmptyStack, "Cannot perform addition on an empty stack",settings,logger).Cause();
+	}
+	
+	void OP_sub(bool b) {
+        if(stack.Count == 1) stack.Push(stack.Pop() - 1);
+        else if(stack.Count > 1) {
+            double x = stack.Pop(), y = stack.Pop();
                 stack.Push(y - x);
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform substraction on an empty stack",settings,logger).Cause();
-            break;
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform substraction on an empty stack",settings,logger).Cause();
+	}
+	
+	void OP_mlt(bool b) {
+		if(stack.Count == 1) stack.Push(stack.Pop() * 2);
+        else if(stack.Count > 1) stack.Push(stack.Pop() * stack.Pop());
+        else if(b) new Error(ErrorType.EmptyStack, "Cannot perform multiplication on an empty stack",settings,logger).Cause();
+	}
+	
+	void OP_div(bool b) {
+        if(stack.Count == 1) stack.Push(stack.Pop() / 2);
+        else if(stack.Count > 1){
+            double x = stack.Pop(), y = stack.Pop();
+            if(x != 0) stack.Push(y / x);
+            else new Error(ErrorType.DivisionByZero, $"Cannot divide {y} by zero",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform division on an empty stack",settings,logger).Cause();
+	}
+	
+	void OP_mod(bool b) {
+        if(stack.Count == 1) stack.Push(stack.Pop() % 1);
+        else if(stack.Count > 1) {
+            double x = stack.Pop(), y = stack.Pop();
+            if(x != 0) stack.Push(y % x);
+            else if(b) new Error(ErrorType.DivisionByZero, $"Cannot modulo {y} by zero",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform modulo on an empty stack",settings,logger).Cause();
+	}
+	
+	void OP_pow(bool b) {
+	    if(stack.Count == 1) { }
+        else if(stack.Count > 1) {
+            double x = stack.Pop(), y = stack.Pop();
+            stack.Push(Math.Pow(y, x));
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot use powers on an empty stack",settings,logger).Cause();
+	}
+	
+	void MC_get(bool b) {
+	    if(stack.Count > 1) {
+            int _ = (int)Math.Round(stack.Pop());
+            Pos p = new Pos(_,(int)Math.Round(stack.Pop()));
+            if(p.IsWithin(board)) stack.Push(board[p.x, p.y]);
+            else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least two items (x,y) to use get",settings,logger).Cause();
+	}
+	
+	void MC_set(bool b) {
+        if(stack.Count > 2) {
+            int chr = (int)Math.Round(stack.Pop());
+            int _ = (int)Math.Round(stack.Pop());
+            Pos p = new Pos(_,(int)Math.Round(stack.Pop()));
+            if(p.IsWithin(board)) board[p.x,p.y] = (char)chr;
+            else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least three items (x,y) and a character to use set",settings,logger).Cause();
+	}
+	
+	void MC_loop(bool b) {
+        if(stack.Count > 0) {
+            double x = stack.Pop();
+            if(x > 0) toLoop = (int)Math.Round(x);
+            else if(b) new Error(ErrorType.InvalidRange, "Cannot loop from a negative number",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot loop from an empty stack",settings,logger).Cause();
+	}
+	
+	async Task IP_str(bool b) {
+		sw.Stop();
+        string s = await contentPage.DisplayPromptAsync("String Input", "Enter a string:", "OK", null, placeholder: "Some string...", keyboard: Keyboard.Plain);
+        sw.Start();
+        if(string.IsNullOrEmpty(s) && b) new Error(ErrorType.InvalidStringInput, "You cannot not input anything (Expected a string)",settings,logger).Cause();
+        for(int j=s.Length-1; j >= 0; j--) stack.Push(s[j]);
+	}
+	
+	async Task IP_num(bool b) {
+		sw.Stop();
+        string d1 = await contentPage.DisplayPromptAsync("Number Input", "Enter a number:", "OK", null, placeholder: "-134.67", keyboard: Keyboard.Numeric);
+        sw.Start();
+        if(string.IsNullOrEmpty(d1) && b) new Error(ErrorType.InvalidNumberInput, "You cannot not input anything (Expected a number)",settings,logger).Cause();
 
-            case _MULTIPLY:
-            if(stack.Count == 1) stack.Push(stack.Pop() * 2);
-            else if(stack.Count > 1) stack.Push(stack.Pop() * stack.Pop());
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot perform multiplication on an empty stack",settings,logger).Cause();
-            break;
-
-            case _DIVIDE:
-            if(stack.Count == 1) stack.Push(stack.Pop() / 2);
-            else if(stack.Count > 1){
-                double x = stack.Pop(), y = stack.Pop();
-                if(x != 0) stack.Push(y / x);
-                else new Error(ErrorType.DivisionByZero, $"Cannot divide {y} by zero",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform division on an empty stack",settings,logger).Cause();
-            break;
-
-            case _MODULO:
-            if(stack.Count == 1) stack.Push(stack.Pop() % 1);
-            else if(stack.Count > 1) {
-                double x = stack.Pop(), y = stack.Pop();
-                if(x != 0) stack.Push(y % x);
-                else if(b) new Error(ErrorType.DivisionByZero, $"Cannot modulo {y} by zero",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot perform modulo on an empty stack",settings,logger).Cause();
-            break;
-
-            case _POW:
-            if(stack.Count == 1) { }
-            else if(stack.Count > 1) {
-                double x = stack.Pop(), y = stack.Pop();
-                stack.Push(Math.Pow(y, x));
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot use powers on an empty stack",settings,logger).Cause();
-            break;
-
-            case _HORIZONTAL_IF:
-            if(stack.Count > 0) dir = stack.Peek() == 0 ? Dir.E : Dir.W;
-            else dir = Dir.E;
-            break;
-
-            case _VERTICAL_IF:
-            if(stack.Count > 0) dir = stack.Peek() == 0 ? Dir.N : Dir.S;
-            else dir = Dir.N;
-            break;
-
-            case _NUM_INPUT:
-            sw.Stop();
-            string d1 = await contentPage.DisplayPromptAsync("Number Input", "Enter a number:", "OK", null, placeholder: "-134.67", keyboard: Keyboard.Numeric);
-            sw.Start();
-            if(string.IsNullOrEmpty(d1) && b) new Error(ErrorType.InvalidNumberInput, "You cannot not input anything (Expected a number)",settings,logger).Cause();
-
-            if(double.TryParse(d1, out double d2)) stack.Push(d2);
-            else stack.Push(0);
-            break;
-
-            case _STR_INPUT:
-            sw.Stop();
-            string s = await contentPage.DisplayPromptAsync("String Input", "Enter a string:", "OK", null, placeholder: "Some string...", keyboard: Keyboard.Plain);
-            sw.Start();
-            if(string.IsNullOrEmpty(s) && b) new Error(ErrorType.InvalidStringInput, "You cannot not input anything (Expected a string)",settings,logger).Cause();
-            for(int j=s.Length-1; j >= 0; j--) stack.Push(s[j]);
-            break;
-
-            case _STR_OUTPUT:
-            if(stack.Count > 0) output += (char)stack.Pop();
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
-            break;
-
-            case _NUM_OUTPUT:
-            if(stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
-            break;
-
-            case _STR_DUMP:
-            if(stack.Count > 0) while(stack.Count > 0) output += (char)stack.Pop();
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as string",settings,logger).Cause();
-            break;
-
-            case _NUM_DUMP:
-            if(stack.Count > 0) while (stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
-            break;
-
-            case _LOOP:
-            if(stack.Count > 0) {
-                double x = stack.Pop();
-                if(x > 0) toLoop = (int)Math.Round(x);
-                else if(b) new Error(ErrorType.InvalidRange, "Cannot loop from a negative number",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot loop from an empty stack",settings,logger).Cause();
-            break;
-
-            case _DUPLICATE:
-            if(stack.Count > 0) stack.Push(stack.Peek());
-            else stack.Push(1);
-            break;
-
-            case _STR_MODE:
-            strMode = true;
-            strBuf = string.Empty;
-            break;
-
-            case _RAND_DIR_8: dir = (Dir)rand.Next(0,8); break;
-            case _RAND_DIR_4: dir = (Dir)rand.Next(0,4); break;
-
-            case _PI: stack.Push(Math.PI); break;
-
-            case _RADICAL:
-            if(stack.Count > 0) {
-                double n = stack.Pop();
-                if(n >= 0) stack.Push(Math.Sqrt(n));
-                else if(b) new Error(ErrorType.InvalidRange, "Cannot get the radial of a negative number",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the radical in an empty stack",settings,logger).Cause();
-            break;
-
-            case _ROUND:
-            if(stack.Count > 0) stack.Push(Math.Round(stack.Pop()));
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot round from an empty stack",settings,logger).Cause();
-            break;
-
-            case _NUM_MODE: numMode = true; break;
-            case _SKIP: pos += dir; break;
-
-            case _GET:
-            if(stack.Count > 1) {
-                int _ = (int)Math.Round(stack.Pop());
-                Pos p = new Pos(_,(int)Math.Round(stack.Pop()));
-                if(p.IsWithin(board)) stack.Push(board[p.x, p.y]);
-                else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least two items (x,y) to use get",settings,logger).Cause();
-            break;
-
-            case _SET:
-            if(stack.Count > 2) {
-                int chr = (int)Math.Round(stack.Pop());
-                int _ = (int)Math.Round(stack.Pop());
-                Pos p = new Pos(_,(int)Math.Round(stack.Pop()));
-                if(p.IsWithin(board)) board[p.x,p.y] = (char)chr;
-                else if(b) new Error(ErrorType.InvalidRange, $"{p.TS} is not within the boundaries of the board: ({board.GetLength(0)}, {board.GetLength(1)})",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "The stack must have at least three items (x,y) and a character to use set",settings,logger).Cause();
-            break;
-
-            case _EQUAL_IF:
-            if(stack.Pop() != stack.Peek()) pos += dir;
-            break;
-
-            case _GET_STACK_SIZE: stack.Push(stack.Count); break;
-            case _POP: stack.Pop(); break;
-            case _INFINITY: stack.Push(double.PositiveInfinity); break;
-            
-            case _SIN:
-            if(stack.Count > 0) stack.Push(Math.Sin(stack.Pop()));
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot get the sinus from an empty stack",settings,logger).Cause();
-            break;
-            
-            case _COS:
-            if(stack.Count > 0) stack.Push(Math.Cos(stack.Pop()));
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cosinus from an empty stack",settings,logger).Cause();
-            break;
-            
-            case _TAN:
-            if(stack.Count > 0) stack.Push(Math.Tan(stack.Pop()));
-            else if(b) new Error(ErrorType.EmptyStack, "Cannot get the tangent from an empty stack",settings,logger).Cause();
-            break;
-            
-            case _CTG:
-            if(stack.Count > 0) {
-                double x = stack.Pop(), y = Math.Tan(x);
-                if(x != 0) stack.Push(1 / y);
-                else new Error(ErrorType.DivisionByZero, $"The tangent of {x} is zero.",settings,logger).Cause();
-            } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cotanget from an empty stack",settings,logger).Cause();
-            break;
-            
-            case _EXIT: return true;
-        } return false;
-    }
+        if(double.TryParse(d1, out double d2)) stack.Push(d2);
+        else stack.Push(0);
+	}
+	
+	void MATH_radical(bool b) {
+        if(stack.Count > 0) {
+            double n = stack.Pop();
+            if(n >= 0) stack.Push(Math.Sqrt(n));
+            else if(b) new Error(ErrorType.InvalidRange, "Cannot get the radial of a negative number",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the radical in an empty stack",settings,logger).Cause();
+	}
+	
+	void MATH_ctg(bool b) {
+        if(stack.Count > 0) {
+            double x = stack.Pop(), y = Math.Tan(x);
+            if(x != 0) stack.Push(1 / y);
+            else new Error(ErrorType.DivisionByZero, $"The tangent of {x} is zero.",settings,logger).Cause();
+        } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cotanget from an empty stack",settings,logger).Cause();
+	}
 }

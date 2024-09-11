@@ -13,6 +13,18 @@ To run this application **on Android** simply download [the apk](https://github.
 
 While I don't plan to implement official **Windows** support you can try to run it with [this exe](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp.exe) (bugs are to be expected and the app could just simply not run).
 
+# Building From Source
+Requirements: git (or gh) and dotnet.
+
+To build this from source you can run this in either powershell or bash:
+
+```
+git clone https://www.github.com/ItsCrist1/EsolangApp.git
+cd EsolangApp
+dotnet build
+dotner run
+```
+
 # Interpreter
 The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/wiki/Befunge) with all sort of arithmetical and utility features. The interpreter works with a floating point number array and the pointer can move in all cardinal and intercardinal directions, meaning you can move diagonally.
 

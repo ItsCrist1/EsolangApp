@@ -6,6 +6,6 @@
 			x:Class="EsolangApp.TabRoot"
             BarBackgroundColor="#252525"
             BackgroundColor="#2E2E2E">	
-	<local:HomeTab Title="Home" IconImageSource="home.png"/>
-	<local:SettingsTab Title="Settings" IconImageSource="settings.png"/>
+	<local:HomeTab Title="Home"/>
+	<local:SettingsTab Title="Settings"/>
 </TabbedPage>
