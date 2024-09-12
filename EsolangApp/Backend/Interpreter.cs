@@ -77,15 +77,16 @@ record struct Pos {
 class Result {
     public readonly char[,] board;
     public readonly long execTime;
-    public readonly string output;
+    public readonly StringBuilder output;
     public readonly Stack<double> stack;
     public readonly Pos pos;
     public readonly Dir dir;
     public readonly uint steps;
+	public readonly List<char> unknownSymbols;
     
     public readonly bool done;
 
-    public Result(char[,] board, long execTime, string output, Stack<double> stack, Pos pos, Dir dir, uint steps, bool done) {
+    public Result(char[,] board, long execTime, StringBuilder output, Stack<double> stack, Pos pos, Dir dir, uint steps, List<char> unknownSymbols, bool done) {
         this.board = board;
         this.execTime = execTime;
         this.output = output;
@@ -93,13 +94,15 @@ class Result {
         this.pos = pos;
         this.dir = dir;
         this.steps = steps;
+		this.unknownSymbols = unknownSymbols;
         this.done = done;
     }
     
-    static public Result Null => new Result(null,0,null,null,new Pos(0),(Dir)0,0,false);
+    static public Result Null => new Result(null,0,null,null,new(0),(Dir)0,0,new(),false);
 
     public string GetStr(Settings settings) {
         StringBuilder str = new();
+		string output = this.output.ToString();
         
         string t = output == string.Empty ? "Nothing." : output;
         
@@ -113,7 +116,12 @@ class Result {
            .AppendLine($"Dir: {dirTS(dir)}")
            .AppendLine($"Steps: {steps}")
            .Append($"Execution Time: {execTime}ms");
-        return str.ToString();
+		   
+		if(unknownSymbols.Count > 0) {
+			str.AppendLine()
+			   .AppendLine($"Unknown symbold encountered: {unknownSymbols.Count}");
+		    foreach(char c in unknownSymbols) str.Append($" {c};");
+		} return str.ToString();
     }
 	
 	string dirTS(Dir d) => d switch {
@@ -194,7 +202,7 @@ class CMD {
 
 class Interpreter : Utils {
     Stack<double> stack;
-    string output;
+    StringBuilder output;
     Pos pos;
     Dir dir;
     char c;
@@ -202,6 +210,7 @@ class Interpreter : Utils {
     string numBuf, strBuf;
     int toLoop;
     uint steps;
+	List<char> unknownSymbols;
 
     Stopwatch sw = new();
     Settings settings;
@@ -214,9 +223,9 @@ class Interpreter : Utils {
 	
 	Dictionary<char,CMD> CMDS;
     
-    /* TODO: Implement an unknown symbol count to
-	register all of the unknown symbols if the dictionary
-	doesn't find it. */
+    /* TODO: Rewrite the number constructor in Step()
+	to avoid unnecessary string manipulation and improve
+	performance */
 
     public Interpreter(Settings settings, ContentPage contentPage, Action<object,EventArgs> resetFunc, string logDir) {
         this.settings = settings;
@@ -249,22 +258,22 @@ class Interpreter : Utils {
 			{ _SET, new(() => MC_set(b)) },
 			
 			{ _STR_OUTPUT, new(() => {
-				if(stack.Count > 0) output += (char)stack.Pop();
+				if(stack.Count > 0) output.Append((char)stack.Pop());
                 else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
 			})},
 			
 			{ _NUM_OUTPUT, new(() => {
-				if(stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
+				if(stack.Count > 0) output.Append(stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}"));
                 else if(b) new Error(ErrorType.EmptyStack, "Cannot output from an empty stack",settings,logger).Cause();
 			})},
 			
 			{ _STR_DUMP, new(() => {
-				if(stack.Count > 0) while(stack.Count > 0) output += (char)stack.Pop();
+				if(stack.Count > 0) while(stack.Count > 0) output.Append((char)stack.Pop());
                 else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as string",settings,logger).Cause();
 			})},
 			
 			{ _NUM_DUMP, new(() => {
-				if(stack.Count > 0) while (stack.Count > 0) output += stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}");
+				if(stack.Count > 0) while (stack.Count > 0) output.Append(stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}"));
                 else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
 			})},
 			
@@ -348,7 +357,7 @@ class Interpreter : Utils {
     
     void resetVars() {
         stack = new();
-        output = string.Empty;
+        output = new();
         pos = new(0);
         dir = Dir.E;
         c = board[pos.x,pos.y];
@@ -356,6 +365,7 @@ class Interpreter : Utils {
         numBuf = strBuf = string.Empty;
         toLoop = 0;
         steps = 0;
+		unknownSymbols = new();
 
         sw.Restart();
     }
@@ -365,7 +375,7 @@ class Interpreter : Utils {
         board = strToBoard(code);
         resetVars();
         
-        Result res = new(board,0,output,new(),new(),dir,steps,true);
+        Result res = new(board,0,output,new(),new(),dir,steps,new(),true);
         if(settings.EnableLogging) logger.Log($"Resetted to {code} {(PIC?"while":"without")} performing initial checks\nResult: {res.GetStr(settings)}");
         return res;
     }
@@ -377,7 +387,7 @@ class Interpreter : Utils {
 
         while(c != _EXIT) await Step(false);
 
-        Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,true);
+        Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,unknownSymbols,true);
         if(settings.EnableLogging) logger.Log($"Interpretted {code}\nResult: {res.GetStr(settings)}");
         return res;
     }
@@ -390,10 +400,9 @@ class Interpreter : Utils {
         if(numMode) {
             if(c == _NUM_MODE) {
                 if(numBuf != string.Empty) {
-                    stack.Push(float.Parse(numBuf));
+                    stack.Push(double.Parse(numBuf));
                     numBuf = string.Empty;
-                }
-                numMode = false;
+                } numMode = false;
             } else if(char.IsDigit(c)) numBuf += c;
             else if(!DECIMALS.Contains(c)) {
                 if(c == '-' || c == '.') numBuf += c;
@@ -412,7 +421,8 @@ class Interpreter : Utils {
                 toLoop = 0;
             } for(int i=0; i < t; i++) {
 				if(c == _EXIT) b = true;
-				else if(CMDS.Keys.Contains(c)) await CMDS[c].ExecFunc();
+				else if(CMDS.TryGetValue(c, out CMD cmd)) await cmd.ExecFunc();
+				else if(c != ' ') unknownSymbols.Add(c);
 			}
         } if(c != _EXIT) pos += dir;
 
@@ -430,7 +440,7 @@ class Interpreter : Utils {
         steps++;
         sw.Stop();
         
-        Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,b);
+        Result res = new(board, sw.ElapsedMilliseconds,output,stack,pos,dir,steps,unknownSymbols,b);
         if(log && settings.EnableLogging) logger.Log($"Stepped\nResult: {res.GetStr(settings)}");
         return res;
     }
