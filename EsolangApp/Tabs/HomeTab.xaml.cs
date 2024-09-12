@@ -66,6 +66,13 @@ partial class HomeTab : ContentPage {
     async void onCopyOutput(object s, EventArgs e) {
         await Clipboard.SetTextAsync(OutputLabel.Text);
     }
+	
+	async void onShareOutput(object s, EventArgs e) {
+		await Share.Default.RequestAsync(new ShareTextRequest() {
+			Text = OutputLabel.Text,
+			Title = "Share with"
+		});
+	}
 
     async void onRun(object s, EventArgs e) {
         if(Globals.SettingsChanged) {

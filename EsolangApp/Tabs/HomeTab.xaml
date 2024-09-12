@@ -62,25 +62,35 @@
                   
                 <Label x:Name="OutputLabel"
                        Text="Output will be displayed here"
-                       Margin="10,0,0,0"/>
+                       Margin="10,0,0,0"
+					   VerticalOptions="Center"
+					   FontSize="15"/>
                        
-                <Button Grid.Column="1"
-                        Text="Copy"
-                        HorizontalOptions="End"
-                        Margin="0,0,10,0"
-                        TextColor="LightGrey"
-                        Clicked="onCopyOutput"
-                        HeightRequest="40"
-                        CornerRadius="10"/>
+			    <VerticalStackLayout Grid.Column="1"
+									 Margin="0,0,10,0"
+									 HorizontalOptions="End"
+									 VerticalOptions="Center"
+									 Spacing="10">
+				    <Button Text="Copy"
+                            TextColor="LightGrey"
+                            Clicked="onCopyOutput"
+                            HeightRequest="40"
+                            CornerRadius="10"/>
+							
+				    <Button Text="Share"
+                            TextColor="LightGrey"
+                            Clicked="onShareOutput"
+                            HeightRequest="40"
+                            CornerRadius="10"/>
+				</VerticalStackLayout>
             </Grid>
         </Grid>
         
         <HorizontalStackLayout Grid.Row="1"
                                HorizontalOptions="Center"
                                VerticalOptions="End"
-                               Margin="10"
+                               Margin="5,20,5,10"
                                Spacing="10">
-                               
             <Button Text="Reset"
                     TextColor="LightGrey"
                     WidthRequest="100"

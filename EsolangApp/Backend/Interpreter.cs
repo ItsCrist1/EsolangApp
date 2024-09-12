@@ -112,8 +112,8 @@ class Result {
 		else foreach(double i in stack) str.Append($" {i};");
         
         str.AppendLine()
-           .AppendLine($"Pos: {pos.TS}")
-           .AppendLine($"Dir: {dirTS(dir)}")
+           .AppendLine($"Position: {pos.TS}")
+           .AppendLine($"Direction: {dirTS(dir)}")
            .AppendLine($"Steps: {steps}")
            .Append($"Execution Time: {execTime}ms");
 		   

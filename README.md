@@ -97,6 +97,27 @@ $ - Removes the last number from the stack. <br/>
 
 . - Gets the last three numbers, rounds them, and uses them as coordinates to set the program's board x,y cell to the third number (First the program takes a number that will be **the character** then a number that will be **the x position** then a number that will be **the y position**).
 
+# Examples
+
+## Hello World
+```"Hello World!" [ ∆```
+
+## Calculate circle circumference
+```} 2π ** )∆```
+
+## Calculate circle area
+```} 2^ π* )∆```
+
+## Convert degrees to radiens
+```} π '180' /* ) ∆```
+
+## Radical
+```} √ ) ∆```
+
+## Factorial
+```}0;SD=1-S
+∆)1AW   _$§1-@*)∆```
+
 # Contact
 You can contact me at cristi9270@gmail.com or cristi123612 on discord.
 
