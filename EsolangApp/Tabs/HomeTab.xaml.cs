@@ -71,6 +71,7 @@ partial class HomeTab : ContentPage {
         if(Globals.SettingsChanged) {
              itptr.ChangeSettings(Globals.Settings);
              Globals.SettingsChanged = false;
+			 Console.WriteLine("Did change them");
         }
         
         Result res = await itptr.Interpret(CodeEditor.Text);

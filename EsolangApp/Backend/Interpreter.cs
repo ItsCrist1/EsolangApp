@@ -207,8 +207,9 @@ class Interpreter : Utils {
     Dir dir;
     char c;
     bool strMode, numMode;
-    string numBuf, strBuf;
-    int toLoop;
+    StringBuilder strBuf;
+	double numBuf;
+    int toLoop, decPlace;
     uint steps;
 	List<char> unknownSymbols;
 
@@ -222,10 +223,6 @@ class Interpreter : Utils {
     char[,] board;
 	
 	Dictionary<char,CMD> CMDS;
-    
-    /* TODO: Rewrite the number constructor in Step()
-	to avoid unnecessary string manipulation and improve
-	performance */
 
     public Interpreter(Settings settings, ContentPage contentPage, Action<object,EventArgs> resetFunc, string logDir) {
         this.settings = settings;
@@ -234,8 +231,16 @@ class Interpreter : Utils {
         this.resetFunc = resetFunc;
         this.logger = new(Path.Combine(logDir, $"Log_{Directory.GetFiles(logDir).Count()+1}.log"), settings.EnableLogging);
 		
-		bool b = settings.CauseRuntimeErrors;
-		
+        changeCMDS(settings.CauseRuntimeErrors);
+    }
+    
+    public void ChangeSettings(Settings settings) {
+        this.settings = settings;
+        this.rand = new(settings.Seed);
+		changeCMDS(settings.CauseRuntimeErrors);
+    }
+	
+	void changeCMDS(bool b) {
 		this.CMDS = new() {
 			{ _NORTH, new(() => { dir = Dir.N; }) },
 			{ _SOUTH, new(() => { dir = Dir.S; }) },
@@ -294,14 +299,11 @@ class Interpreter : Utils {
 			
 			{ _LOOP, new(() => MC_loop(b)) },
 			{ _SKIP, new(() => { pos += dir; }) },
-			{ _DUPLICATE, new(() => {
-			    if(stack.Count > 0) stack.Push(stack.Peek());
-                else stack.Push(1);
-			})},
+			{ _DUPLICATE, new(() => { stack.Push(stack.Count>0?stack.Peek():1); })},
 			{ _GET_STACK_SIZE, new(() => { stack.Push(stack.Count); }) },
 			{ _POP, new(() => { stack.Pop(); }) },
 			
-			{ _STR_MODE, new(() => { strMode = true; strBuf = string.Empty; }) },
+			{ _STR_MODE, new(() => { strMode = true; strBuf = new(); }) },
 			{ _NUM_MODE, new(() => { numMode = true; }) },
 			
 			{ _RAND_DIR_8, new(() => { dir = (Dir)rand.Next(0,8); }) },
@@ -329,12 +331,7 @@ class Interpreter : Utils {
 			})},
 			{ _CTG, new(() => MATH_ctg(b)) }
 		};
-    }
-    
-    public void ChangeSettings(Settings settings) {
-        this.settings = settings;
-        this.rand = new(settings.Seed);
-    }
+	}
 
     void performInitChecks(string s) {
         if(!settings.PerformInitialChecks) return;
@@ -362,9 +359,11 @@ class Interpreter : Utils {
         dir = Dir.E;
         c = board[pos.x,pos.y];
         strMode = numMode = false;
-        numBuf = strBuf = string.Empty;
+        strBuf = new();
+		numBuf = 0;
         toLoop = 0;
         steps = 0;
+		decPlace = 0;
 		unknownSymbols = new();
 
         sw.Restart();
@@ -398,21 +397,26 @@ class Interpreter : Utils {
         sw.Start();
 
         if(numMode) {
-            if(c == _NUM_MODE) {
-                if(numBuf != string.Empty) {
-                    stack.Push(double.Parse(numBuf));
-                    numBuf = string.Empty;
-                } numMode = false;
-            } else if(char.IsDigit(c)) numBuf += c;
-            else if(!DECIMALS.Contains(c)) {
-                if(c == '-' || c == '.') numBuf += c;
-                else new Error(ErrorType.InvalidNumber, "Cannot read such number",settings,logger);
-            }
+			if(c == _NUM_MODE) {
+				stack.Push(numBuf);
+				numBuf = 0;
+				numMode = false;
+				decPlace = 0;
+			} else {
+				if(decPlace == 0) {
+					if(char.IsDigit(c)) numBuf = numBuf * 10 + c - '0';
+					else if(c == '.') decPlace = 1;
+				    else if(!DECIMALS.Contains(c)) new Error(ErrorType.InvalidNumber, $"{c} is not a valid character for a number.", settings,logger).Cause();
+				} else {
+					if(char.IsDigit(c)) numBuf += (c-'0') / Math.Pow(10, decPlace++);
+					else new Error(ErrorType.InvalidNumber, $"{c} is not a valid character for a number.",settings,logger).Cause();
+				}
+			}
         } else if(strMode) {
             if(c == _STR_MODE) {
                 strMode = false;
                 for(int i=strBuf.Length-1; i >= 0; i--) stack.Push((int)strBuf[i]);
-            } else strBuf += c;
+            } else strBuf.Append(c);
         } else if(char.IsDigit(c)) stack.Push(c - '0');
         else {
             int t = 1;
@@ -547,7 +551,7 @@ class Interpreter : Utils {
 	void MATH_ctg(bool b) {
         if(stack.Count > 0) {
             double x = stack.Pop(), y = Math.Tan(x);
-            if(x != 0) stack.Push(1 / y);
+            if(y != 0) stack.Push(1 / y);
             else new Error(ErrorType.DivisionByZero, $"The tangent of {x} is zero.",settings,logger).Cause();
         } else if(b) new Error(ErrorType.EmptyStack, "Cannot get the cotanget from an empty stack",settings,logger).Cause();
 	}
