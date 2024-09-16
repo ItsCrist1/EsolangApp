@@ -45,7 +45,8 @@
                             Keyboard="Text"
                             BackgroundColor="Transparent"
                             IsSpellCheckEnabled="false"
-                            TextColor="#FFF"/>
+                            TextColor="#FFF"
+                            FontFamily="JetBrainsMono"/>
                 </Frame>
                 
                 <Frame BackgroundColor="#393939"

@@ -31,6 +31,8 @@ partial class HomeTab : ContentPage {
         Result res = itptr.Reset(CodeEditor.Text,false);
         
         populateDebugGrid(res.board,new(0,0));
+
+        CodeEditor.FontFamily = "JetBrainsMono";
     }
     
     void populateDebugGrid(char[,] v, Tuple<int,int> h) {
@@ -51,7 +53,8 @@ partial class HomeTab : ContentPage {
                     VerticalOptions = LayoutOptions.Center,
                     FontSize = 14,
                     Padding = 3,
-                    BackgroundColor = h.Item1==y && h.Item2==x ? HIGHLIGHT_COL : NORMAL_COL
+                    BackgroundColor = h.Item1==y && h.Item2==x ? HIGHLIGHT_COL : NORMAL_COL,
+                    FontFamily = "JetBrainsMono"
                 }, y,x);
     }
     

@@ -82,11 +82,11 @@ class Result {
     public readonly Pos pos;
     public readonly Dir dir;
     public readonly uint steps;
-	public readonly List<char> unknownSymbols;
+	public readonly StringBuilder unknownSymbols;
     
     public readonly bool done;
 
-    public Result(char[,] board, long execTime, StringBuilder output, Stack<double> stack, Pos pos, Dir dir, uint steps, List<char> unknownSymbols, bool done) {
+    public Result(char[,] board, long execTime, StringBuilder output, Stack<double> stack, Pos pos, Dir dir, uint steps, StringBuilder unknownSymbols, bool done) {
         this.board = board;
         this.execTime = execTime;
         this.output = output;
@@ -117,10 +117,10 @@ class Result {
            .AppendLine($"Steps: {steps}")
            .Append($"Execution Time: {execTime}ms");
 		   
-		if(unknownSymbols.Count > 0) {
+		if(unknownSymbols.Length > 0) {
 			str.AppendLine()
-			   .AppendLine($"Unknown symbold encountered: {unknownSymbols.Count}");
-		    foreach(char c in unknownSymbols) str.Append($" {c};");
+			   .AppendLine($"Unknown symbold encountered: {unknownSymbols.Length}");
+		    foreach(char c in unknownSymbols.ToString()) str.Append($" {c};");
 		} return str.ToString();
     }
 	
@@ -133,7 +133,7 @@ class Result {
 		Dir.NE => "North-East",
 		Dir.NW => "North-West",
 		Dir.SE => "South-East",
-		Dir.SW => "South-West"
+		Dir.SW => "South-West",
 	};
 }
 
@@ -211,7 +211,8 @@ class Interpreter : Utils {
 	double numBuf;
     int toLoop, decPlace;
     uint steps;
-	List<char> unknownSymbols;
+	StringBuilder unknownSymbols;
+	double clipboard;
 
     Stopwatch sw = new();
     Settings settings;
@@ -237,6 +238,7 @@ class Interpreter : Utils {
     public void ChangeSettings(Settings settings) {
         this.settings = settings;
         this.rand = new(settings.Seed);
+		
 		changeCMDS(settings.CauseRuntimeErrors);
     }
 	
@@ -278,8 +280,10 @@ class Interpreter : Utils {
 			})},
 			
 			{ _NUM_DUMP, new(() => {
-				if(stack.Count > 0) while (stack.Count > 0) output.Append(stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}"));
-                else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
+				if(stack.Count > 0) while (stack.Count > 0) {
+					output.Append(stack.Pop().ToString($"{(settings.Delimeter?"N":"F")}{settings.Precision}"));
+					output.Append(' ');
+				} else if(b) new Error(ErrorType.EmptyStack, "Cannot dump an empty stack as number",settings,logger).Cause();
 			})},
 			
 			{ _STR_INPUT, new(async () => await IP_str(b)) },
@@ -299,9 +303,19 @@ class Interpreter : Utils {
 			
 			{ _LOOP, new(() => MC_loop(b)) },
 			{ _SKIP, new(() => { pos += dir; }) },
-			{ _DUPLICATE, new(() => { stack.Push(stack.Count>0?stack.Peek():1); })},
+			{ _DUPLICATE, new(() => { stack.Push(stack.Count>0?stack.Peek():0); })},
 			{ _GET_STACK_SIZE, new(() => { stack.Push(stack.Count); }) },
 			{ _POP, new(() => { stack.Pop(); }) },
+			{ _REVERSE, new(() => {
+				Stack<double> ts = new();
+				while(stack.Count > 0) ts.Push(stack.Pop());
+				stack = ts;
+			}) },
+			{ _SWAP, new(() => {
+			    double x = stack.Pop(), y = stack.Pop();
+				stack.Push(x);
+				stack.Push(y);
+			}) },
 			
 			{ _STR_MODE, new(() => { strMode = true; strBuf = new(); }) },
 			{ _NUM_MODE, new(() => { numMode = true; }) },
@@ -329,7 +343,11 @@ class Interpreter : Utils {
 				if(stack.Count > 0) stack.Push(Math.Tan(stack.Pop()));
                 else if(b) new Error(ErrorType.EmptyStack, "Cannot get the tangent from an empty stack",settings,logger).Cause();
 			})},
-			{ _CTG, new(() => MATH_ctg(b)) }
+			{ _CTG, new(() => MATH_ctg(b)) },
+			
+			{ _COPY, new(() => { clipboard = stack.Count>0?stack.Peek():0;}) },
+			{ _CUT, new(() => { clipboard = stack.Count>0?stack.Pop():0;}) },
+			{ _PASTE, new(() => { stack.Push(clipboard); }) }
 		};
 	}
 
@@ -364,6 +382,7 @@ class Interpreter : Utils {
         toLoop = 0;
         steps = 0;
 		decPlace = 0;
+		clipboard = 0;
 		unknownSymbols = new();
 
         sw.Restart();
@@ -426,7 +445,7 @@ class Interpreter : Utils {
             } for(int i=0; i < t; i++) {
 				if(c == _EXIT) b = true;
 				else if(CMDS.TryGetValue(c, out CMD cmd)) await cmd.ExecFunc();
-				else if(c != ' ') unknownSymbols.Add(c);
+				else if(c != ' ') unknownSymbols.Append(c);
 			}
         } if(c != _EXIT) pos += dir;
 

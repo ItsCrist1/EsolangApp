@@ -1,19 +1,26 @@
-﻿using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
-using CommunityToolkit.Maui;
+﻿using Microsoft.Extensions.Logging;
 
-namespace EsolangApp;
+namespace EsolangApp
+{
+    public static class MauiProgram
+    {
+        public static MauiApp CreateMauiApp()
+        {
+            var builder = MauiApp.CreateBuilder();
+            builder
+                .UseMauiApp<App>()
+                .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("JetBrainsMono-Medium.ttf", "JetBrainsMono");
+                });
 
-static class MauiProgram {
-	static MauiApp CreateMauiApp() {
-		MauiAppBuilder b = MauiApp.CreateBuilder();
-        
-		b.UseMauiApp<App>().UseMauiCommunityToolkit()
-                           .ConfigureFonts(fonts => {
-                               fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                               fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-        });
-        
-        return b.Build();
-	}
+#if DEBUG
+    		builder.Logging.AddDebug();
+#endif
+
+            return builder.Build();
+        }
+    }
 }

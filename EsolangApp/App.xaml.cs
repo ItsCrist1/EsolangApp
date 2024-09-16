@@ -9,8 +9,8 @@ using Microsoft.Maui.Storage;
 namespace EsolangApp;	
 
 partial class App : Application {
-    const string DEF_CONTENT = "}0;SD=1-S\n∆)1AW   _$§1-@*)∆";
-    const bool FORCE_FORGET = false;
+    const string DEF_CONTENT = "}11Dx=vc+v¥€1-S\n   W€         _ ] ∆";
+    const bool FORCE_FORGET = true;
     
 	public App() {
 		InitializeComponent();

@@ -9,9 +9,9 @@ An application made with .NET MAUI for a custom esolang interpreter written in C
 # Installation
 This MAUI application is meant to be ran on Android but it'll get IOS support soon. <br/>
 
-To run this application **on Android** simply download [the apk](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp-signed.apk). <br/>
+To run this application on **Android** simply download [the apk](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp-signed.apk). <br/>
 
-While I don't plan to implement official **Windows** support you can try to run it with [this exe](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp.exe) (bugs are to be expected and the app could just simply not run).
+There is no **Windows** or **IOS** or **MAC** support yet.
 
 # Building From Source
 Requirements: git (or gh) and dotnet.
@@ -91,6 +91,12 @@ _ - Changes the direcrion to East if the stack is empty or if the last number fr
 ! - Goes in a random cardinal or intercardinal direction. <br/>
 $ - Removes the last number from the stack. <br/>
 § - Pushes the stack size as a number to the stack. <br/>
+¥ - Swaps the last two items of the stack <br/>
+
+## Clipboard
+c - Copies the last stack item <br/>
+x - Pops the last stack item and copies it <br/>
+v - Pushes the copied value to stack (zero by default) <br/>
 
 ## File Operations
 , - Gets the last two numbers, rounds them, and uses them as coordinates to look at the program board and pushes the character it founds at the x,y position to the stack. (First the program takes a number that will be **the x position** then a number that will be **the y position**).
@@ -115,8 +121,19 @@ $ - Removes the last number from the stack. <br/>
 ```} √ ) ∆```
 
 ## Factorial
-```}0;SD=1-S
-∆)1AW   _$§1-@*)∆```
+```
+}0;SD=1-S
+∆)1AW   _$§1-@*)∆
+```
+
+## Fibbonacci Sequence
+```
+}11Dx=vc+v¥€1-S
+   W€         _ ] ∆
+```
+
+# Attributions
+This project uses [The JetBrains Mono](https://github.com/JetBrains/JetBrainsMono/) font that is under [The SIL Open Font License 1.1](https://github.com/JetBrains/JetBrainsMono/blob/master/OFL.txt)
 
 # Contact
 You can contact me at cristi9270@gmail.com or cristi123612 on discord.

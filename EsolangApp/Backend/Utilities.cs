@@ -32,6 +32,10 @@ class Utils {
     protected const char _DUPLICATE = '=';
     protected const char _RAND_DIR_8 = '?';
     protected const char _RAND_DIR_4 = '!';
+	
+	protected const char _COPY = 'c';
+	protected const char _CUT = 'x';
+	protected const char _PASTE = 'v';
 
     protected const char _PI = 'π';
     protected const char _RADICAL = '√';
@@ -47,6 +51,8 @@ class Utils {
     protected const char _SET = '.';
     protected const char _GET_STACK_SIZE = '§';
     protected const char _POP = '$';
+	protected const char _REVERSE = '€';
+	protected const char _SWAP = '¥';
 
     protected const char _NORTH = 'W';
     protected const char _EAST = 'D';
