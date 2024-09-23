@@ -8,7 +8,7 @@
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
   <Identity Name="com.companyname.esolangapp" Publisher="CN=User Name" Version="1.0.0.1" ProcessorArchitecture="x64" />
-  <mp:PhoneIdentity PhoneProductId="DE11E7AB-6F4B-490D-BDBB-881AEA55A703" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <mp:PhoneIdentity PhoneProductId="E7B354A7-1523-4DF3-9ADC-B079A9072C65" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>EsolangApp</DisplayName>
     <PublisherDisplayName>User Name</PublisherDisplayName>

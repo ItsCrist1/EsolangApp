@@ -1,8 +1,6 @@
-DroidSansMono.ttf
 JetBrainsMono-Medium.ttf
 OpenSans-Regular.ttf
 OpenSans-Semibold.ttf
-SpaceMono-Regular.ttf
 appicon.ico
 appiconLargeTile.scale-100.png
 appiconLargeTile.scale-125.png
@@ -54,6 +52,8 @@ dotnet_bot.scale-125.png
 dotnet_bot.scale-150.png
 dotnet_bot.scale-200.png
 dotnet_bot.scale-400.png
+home.scale-100.png
+settings.scale-100.png
 splashSplashScreen.scale-100.png
 splashSplashScreen.scale-125.png
 splashSplashScreen.scale-150.png

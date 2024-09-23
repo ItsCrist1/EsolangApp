@@ -18,7 +18,7 @@
     <DeployOptionalPackages>false</DeployOptionalPackages>
     <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
     <LayoutDir>C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AppX</LayoutDir>
-    <RegisteredManifestChecksum>446F407EC55B572FD07B87B9AE8E235EC0C22A6AF035AE4AA56A4A9CB6A9CB8D</RegisteredManifestChecksum>
+    <RegisteredManifestChecksum>4F910DEE1B0992B36B954255E37083476BF32E0444863CDDDB23FCBF75CD9248</RegisteredManifestChecksum>
     <RegisteredPackageMoniker>com.companyname.esolangapp_1.0.0.1_x64__9zz4h110yvjzm</RegisteredPackageMoniker>
     <RegisteredUserModeAppID>com.companyname.esolangapp_9zz4h110yvjzm!App</RegisteredUserModeAppID>
     <RegisteredPackageID>com.companyname.esolangapp</RegisteredPackageID>
@@ -29,277 +29,277 @@
     <AppXManifest Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2024-09-15T08:56:06.250</Modified>
+      <Modified>2024-09-23T04:58:00.286</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2024-09-15T08:54:48.134</Modified>
+      <Modified>2024-09-23T04:58:00.197</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\EsolangApp.runtimeconfig.json">
       <PackagePath>EsolangApp.runtimeconfig.json</PackagePath>
-      <Modified>2024-09-15T08:43:45.050</Modified>
+      <Modified>2024-09-23T04:55:28.103</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\EsolangApp.dll">
       <PackagePath>EsolangApp.dll</PackagePath>
-      <Modified>2024-09-15T08:56:06.090</Modified>
+      <Modified>2024-09-23T04:57:59.563</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>EsolangApp.exe</PackagePath>
-      <Modified>2024-09-15T08:56:06.092</Modified>
+      <Modified>2024-09-23T04:57:59.570</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\Resources\Raw\AboutAssets.txt">
       <PackagePath>AboutAssets.txt</PackagePath>
-      <Modified>2024-09-15T08:41:35.993</Modified>
+      <Modified>2024-09-23T04:48:08.238</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-100.png">
       <PackagePath>splashSplashScreen.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:45.739</Modified>
+      <Modified>2024-09-23T04:54:34.901</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-125.png">
       <PackagePath>splashSplashScreen.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:45.746</Modified>
+      <Modified>2024-09-23T04:54:34.909</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-150.png">
       <PackagePath>splashSplashScreen.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:45.757</Modified>
+      <Modified>2024-09-23T04:54:34.919</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-200.png">
       <PackagePath>splashSplashScreen.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:45.770</Modified>
+      <Modified>2024-09-23T04:54:34.933</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-400.png">
       <PackagePath>splashSplashScreen.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:45.827</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\DroidSansMono.ttf">
-      <PackagePath>DroidSansMono.ttf</PackagePath>
-      <Modified>2024-09-15T08:24:13.481</Modified>
+      <Modified>2024-09-23T04:54:34.990</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\JetBrainsMono-Medium.ttf">
       <PackagePath>JetBrainsMono-Medium.ttf</PackagePath>
-      <Modified>2023-01-14T15:20:01.000</Modified>
+      <Modified>2024-09-23T04:48:08.235</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\OpenSans-Regular.ttf">
       <PackagePath>OpenSans-Regular.ttf</PackagePath>
-      <Modified>2024-09-15T08:41:35.989</Modified>
+      <Modified>2024-09-23T04:54:23.750</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\OpenSans-Semibold.ttf">
       <PackagePath>OpenSans-Semibold.ttf</PackagePath>
-      <Modified>2024-09-15T08:41:35.991</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\SpaceMono-Regular.ttf">
-      <PackagePath>SpaceMono-Regular.ttf</PackagePath>
-      <Modified>2024-08-12T23:23:36.000</Modified>
+      <Modified>2024-09-23T04:54:23.751</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appicon.ico">
       <PackagePath>appicon.ico</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-100.png">
       <PackagePath>appiconLargeTile.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-125.png">
       <PackagePath>appiconLargeTile.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-150.png">
       <PackagePath>appiconLargeTile.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-200.png">
       <PackagePath>appiconLargeTile.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLargeTile.scale-400.png">
       <PackagePath>appiconLargeTile.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-16.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-16.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-24.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-24.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-256.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-256.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-32.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-32.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-lightunplated_targetsize-48.png">
       <PackagePath>appiconLogo.altform-lightunplated_targetsize-48.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-16.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-16.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-24.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-24.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-256.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-256.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-32.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-32.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.altform-unplated_targetsize-48.png">
       <PackagePath>appiconLogo.altform-unplated_targetsize-48.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-100.png">
       <PackagePath>appiconLogo.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-125.png">
       <PackagePath>appiconLogo.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-150.png">
       <PackagePath>appiconLogo.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-200.png">
       <PackagePath>appiconLogo.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.scale-400.png">
       <PackagePath>appiconLogo.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-16.png">
       <PackagePath>appiconLogo.targetsize-16.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-24.png">
       <PackagePath>appiconLogo.targetsize-24.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-256.png">
       <PackagePath>appiconLogo.targetsize-256.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-32.png">
       <PackagePath>appiconLogo.targetsize-32.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconLogo.targetsize-48.png">
       <PackagePath>appiconLogo.targetsize-48.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.368</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-100.png">
       <PackagePath>appiconMediumTile.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-125.png">
       <PackagePath>appiconMediumTile.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-150.png">
       <PackagePath>appiconMediumTile.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-200.png">
       <PackagePath>appiconMediumTile.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconMediumTile.scale-400.png">
       <PackagePath>appiconMediumTile.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-100.png">
       <PackagePath>appiconSmallTile.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-125.png">
       <PackagePath>appiconSmallTile.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-150.png">
       <PackagePath>appiconSmallTile.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-200.png">
       <PackagePath>appiconSmallTile.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconSmallTile.scale-400.png">
       <PackagePath>appiconSmallTile.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-100.png">
       <PackagePath>appiconStoreLogo.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-125.png">
       <PackagePath>appiconStoreLogo.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-150.png">
       <PackagePath>appiconStoreLogo.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-200.png">
       <PackagePath>appiconStoreLogo.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconStoreLogo.scale-400.png">
       <PackagePath>appiconStoreLogo.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-100.png">
       <PackagePath>appiconWideTile.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-125.png">
       <PackagePath>appiconWideTile.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.367</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-150.png">
       <PackagePath>appiconWideTile.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-200.png">
       <PackagePath>appiconWideTile.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appiconWideTile.scale-400.png">
       <PackagePath>appiconWideTile.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-100.png">
       <PackagePath>dotnet_bot.scale-100.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-125.png">
       <PackagePath>dotnet_bot.scale-125.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-150.png">
       <PackagePath>dotnet_bot.scale-150.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-200.png">
       <PackagePath>dotnet_bot.scale-200.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-400.png">
       <PackagePath>dotnet_bot.scale-400.png</PackagePath>
-      <Modified>2024-09-15T08:41:46.366</Modified>
+      <Modified>2024-09-23T04:57:26.418</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\home.scale-100.png">
+      <PackagePath>home.scale-100.png</PackagePath>
+      <Modified>2024-09-23T04:57:26.418</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\settings.scale-100.png">
+      <PackagePath>settings.scale-100.png</PackagePath>
+      <Modified>2024-09-23T04:57:26.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\EsolangApp.deps.json">
       <PackagePath>EsolangApp.deps.json</PackagePath>
-      <Modified>2024-09-15T08:54:48.101</Modified>
+      <Modified>2024-09-23T04:58:00.090</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\.nuget\packages\microsoft.windows.sdk.net.ref\10.0.19041.34\lib\net6.0\Microsoft.Windows.SDK.NET.dll">
       <PackagePath>Microsoft.Windows.SDK.NET.dll</PackagePath>

@@ -176,6 +176,6 @@ C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\qualifiers.txt.intermediate
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\MultipleQualifiersPerDimensionFound.txt
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\ProjectArchitectures.txt
-C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\DroidSansMono.ttf
-C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\SpaceMono-Regular.ttf
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\JetBrainsMono-Medium.ttf
+C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\home.scale-100.png
+C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\settings.scale-100.png

@@ -13,7 +13,6 @@ namespace EsolangApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("JetBrainsMono-Medium.ttf", "JetBrainsMono");
                 });
 
 #if DEBUG

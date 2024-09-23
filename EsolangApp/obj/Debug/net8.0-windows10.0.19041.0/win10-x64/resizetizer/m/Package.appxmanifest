@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap rescap">
   <Identity Name="com.companyname.esolangapp" Publisher="CN=User Name" Version="1.0.0.1" />
-  <mp:PhoneIdentity PhoneProductId="DE11E7AB-6F4B-490D-BDBB-881AEA55A703" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <mp:PhoneIdentity PhoneProductId="E7B354A7-1523-4DF3-9ADC-B079A9072C65" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>EsolangApp</DisplayName>
     <PublisherDisplayName>User Name</PublisherDisplayName>

@@ -24,6 +24,7 @@ C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resi
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\sp\values\maui_colors.xml
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\mauisplash.stamp
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\mauifont.stamp
+C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\f\JetBrainsMono-Medium.ttf
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\f\OpenSans-Regular.ttf
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\f\OpenSans-Semibold.ttf
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\drawable-hdpi\dotnet_bot.png
@@ -31,6 +32,8 @@ C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resi
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\drawable-xhdpi\dotnet_bot.png
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\drawable-xxhdpi\dotnet_bot.png
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\drawable-xxxhdpi\dotnet_bot.png
+C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\drawable\home.png
+C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\drawable\settings.png
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\mipmap-anydpi-v26\appicon.xml
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\mipmap-anydpi-v26\appicon_round.xml
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\r\mipmap-hdpi\appicon.png
@@ -1037,6 +1040,3 @@ C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\stam
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\stamp\_GenerateJavaStubs.stamp
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\stamp\_GeneratePackageManagerJava.stamp
 C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\stamp\_ResolveLibraryProjectImports.stamp
-C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\f\DroidSansMono.ttf
-C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\f\JetBrainsMono-Medium.ttf
-C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-android\resizetizer\f\SpaceMono-Regular.ttf

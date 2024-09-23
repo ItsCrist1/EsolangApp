@@ -55,9 +55,6 @@
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\splashSplashScreen.scale-400.png">
       <PackagePath>splashSplashScreen.scale-400.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\DroidSansMono.ttf">
-      <PackagePath>DroidSansMono.ttf</PackagePath>
-    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\JetBrainsMono-Medium.ttf">
       <PackagePath>JetBrainsMono-Medium.ttf</PackagePath>
     </AppxPackagedFile>
@@ -66,9 +63,6 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\OpenSans-Semibold.ttf">
       <PackagePath>OpenSans-Semibold.ttf</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\f\SpaceMono-Regular.ttf">
-      <PackagePath>SpaceMono-Regular.ttf</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\appicon.ico">
       <PackagePath>appicon.ico</PackagePath>
@@ -222,6 +216,12 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\dotnet_bot.scale-400.png">
       <PackagePath>dotnet_bot.scale-400.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\home.scale-100.png">
+      <PackagePath>home.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\settings.scale-100.png">
+      <PackagePath>settings.scale-100.png</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\cristi\source\repos\EsolangApp\EsolangApp\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\EsolangApp.deps.json">
       <PackagePath>EsolangApp.deps.json</PackagePath>
