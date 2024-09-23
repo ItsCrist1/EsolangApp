@@ -1,1 +1,0 @@
-C:\Users\cristi\source\repos\EsolangApp\EsolangApp\EsolangApp.csproj;x64
