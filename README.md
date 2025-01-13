@@ -1,5 +1,5 @@
 # EsolangApp
-An application made with .NET MAUI for a custom esolang interpreter written in C# by me.
+An application made with .NET MAUI for a custom esolang interpreter written in C#.
 
 # Features
 - Step By Step Debugging
@@ -7,11 +7,9 @@ An application made with .NET MAUI for a custom esolang interpreter written in C
 - Comprehensive and customizable logging
 
 # Installation
-This MAUI application is meant to be ran on Android but it'll get IOS support soon. <br/>
+This MAUI application is meant to be ran on Android but it'll get **iOS** support eventually. <br/>
 
 To run this application on **Android** simply download [the apk](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp-signed.apk). <br/>
-
-There is no **Windows** or **IOS** or **MAC** support yet.
 
 # Building From Source
 Requirements: git (or gh) and dotnet.
@@ -22,11 +20,11 @@ To build this from source you can run this in either powershell or bash:
 git clone https://www.github.com/ItsCrist1/EsolangApp.git
 cd EsolangApp
 dotnet build
-dotner run
+dotnet run
 ```
 
 # Interpreter
-The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/wiki/Befunge) with all sort of arithmetical and utility features. The interpreter works with a floating point number array and the pointer can move in all cardinal and intercardinal directions, meaning you can move diagonally.
+The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/wiki/Befunge) with all sorts of arithmetical and utility features. The interpreter uses a floating-point number array.
 
 # Instructions
 ∆ - Exit program immediately.
@@ -56,7 +54,7 @@ Tip: You can also use _ to delimiter decimals (no practical use but makes it eas
 
 \* - Gets the last two elements from the stack and pushes their multiplication (If only one element is present then the last element will get doubled).
 
-/ - Gets the last two elements from the stack and pushes their division (If only one element is present then the last element will get halves by one).
+/ - Gets the last two elements from the stack and pushes their division (If only one element is present then the last element is halved).
 
 % - Gets the last two elements from the stack and pushes their modulo (If only one element is present then the last element will be moduloed by one).
 
