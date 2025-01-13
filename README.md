@@ -1,32 +1,40 @@
 # EsolangApp
-An application made with .NET MAUI for a custom esolang interpreter written in C#.
+An application made with [.NET MAUI](https://dotnet.microsoft.com/en-us/apps/maui) for a custom esolang interpreter written in C#.
+
+# Compatibility
+This application only works on **Android** for now.
 
 # Features
 - Step By Step Debugging
 - Lots of settings and configuration
 - Comprehensive and customizable logging
 
-# Installation
-This MAUI application is meant to be ran on Android but it'll get **iOS** support eventually. <br/>
-
-To run this application on **Android** simply download [the apk](https://github.com/ItsCrist1/EsolangApp/blob/main/EsolangApp/bin/Release/EsolangApp-signed.apk). <br/>
+# Installing
+Install the APK from the latest release.
 
 # Building From Source
-Requirements: git (or gh) and dotnet.
+Works best on **Windows** but should work on **Linux** with proper .NET MAUI compatibility.
 
-To build this from source you can run this in either powershell or bash:
+## Requirements
+-Git (or the GitHub CLI)
+-.NET SDK with MAUI support
+
+## Building
+
+To build this from source you can run this in either **PowerShell** or **Bash**:
 
 ```
 git clone https://www.github.com/ItsCrist1/EsolangApp.git
 cd EsolangApp
 dotnet build
-dotnet run
 ```
 
 # Interpreter
-The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/wiki/Befunge) with all sorts of arithmetical and utility features. The interpreter uses a floating-point number array.
+The interpreter is an esolang inspired by [Befunge](https://en.m.wikipedia.org/wiki/Befunge) with all sorts of arithmetical and utility features. The interpreter uses a floating-point stack.
 
 # Instructions
+
+## Control Flow
 ∆ - Exit program immediately.
 
 ## Directions
@@ -67,7 +75,7 @@ Tip: You can also use _ to delimiter decimals (no practical use but makes it eas
 & - Rounds the last number from the stack. <br/>
 
 ## If Statements
-_ - Changes the direcrion to East if the stack is empty or if the last number from the stack is 0, the direction gets set to West otherwise. <br/>
+_ - Changes the direction to East if the stack is empty or if the last number from the stack is 0, the direction gets set to West otherwise. <br/>
 | - Changes the direcrion to North if the stack is empty or if the last number from the stack is 0, the direction gets set to South otherwise. <br/>
 ; - If the last number isn't equal to the second to last one then the pointer moves an extra cell by the direction it already had. <br/>
 
@@ -96,7 +104,7 @@ c - Copies the last stack item <br/>
 x - Pops the last stack item and copies it <br/>
 v - Pushes the copied value to stack (zero by default) <br/>
 
-## File Operations
+## Code Operations
 , - Gets the last two numbers, rounds them, and uses them as coordinates to look at the program board and pushes the character it founds at the x,y position to the stack. (First the program takes a number that will be **the x position** then a number that will be **the y position**).
 
 . - Gets the last three numbers, rounds them, and uses them as coordinates to set the program's board x,y cell to the third number (First the program takes a number that will be **the character** then a number that will be **the x position** then a number that will be **the y position**).
@@ -112,7 +120,7 @@ v - Pushes the copied value to stack (zero by default) <br/>
 ## Calculate circle area
 ```} 2^ π* )∆```
 
-## Convert degrees to radiens
+## Convert degrees to radians
 ```} π '180' /* ) ∆```
 
 ## Radical
@@ -124,7 +132,7 @@ v - Pushes the copied value to stack (zero by default) <br/>
 ∆)1AW   _$§1-@*)∆
 ```
 
-## Fibbonacci Sequence
+## Fibonacci Sequence
 ```
 }11Dx=vc+v¥€1-S
    W€         _ ] ∆
